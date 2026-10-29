@@ -1,0 +1,31 @@
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "ShikshaIQ | Class 7 Adaptive Mathematics",
+    short_name: "ShikshaIQ",
+    description:
+      "Personalized, NCERT-aligned adaptive mathematics learning platform with offline practice capabilities.",
+    start_url: "/student",
+    scope: "/",
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#000000",
+    orientation: "portrait",
+    categories: ["education", "mathematics"],
+    icons: [
+      {
+        src: "/icons/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any",
+      },
+      {
+        src: "/icons/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "maskable",
+      },
+    ],
+  };
+}

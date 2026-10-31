@@ -65,8 +65,8 @@ describe("Phase 08 Security Audit — Public Registration Privilege Escalation",
 });
 
 describe("Phase 08 Security Audit — Zero Answer Key Leakage in Client Curriculum", () => {
-  test("All 25 public questions contain ZERO private answer keys or pedagogical explanations", () => {
-    assert.equal(ALL_QUESTIONS.length, 25, "All 25 curriculum questions must be verified");
+  test("All 50 public questions contain ZERO private answer keys or pedagogical explanations", () => {
+    assert.equal(ALL_QUESTIONS.length, 50, "All 50 curriculum questions must be verified");
 
     for (const q of ALL_QUESTIONS) {
       const untrusted = q as unknown as Record<string, unknown>;
@@ -76,7 +76,7 @@ describe("Phase 08 Security Audit — Zero Answer Key Leakage in Client Curricul
     }
   });
 
-  test("Private server repository contains matching verified answer keys for all 25 questions", () => {
+  test("Private server repository contains matching verified answer keys for all 50 questions", () => {
     for (const q of ALL_QUESTIONS) {
       const key = ANSWER_KEYS[q.id];
       assert.ok(key, `Question ${q.id} must have a corresponding server answer key`);

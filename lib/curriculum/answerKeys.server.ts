@@ -172,4 +172,165 @@ export const ANSWER_KEYS: Record<string, PrivateAnswerKey> = {
     explanation:
       "Add whole numbers: 2 + 1 = 3. Add fractional parts: 1/3 + 1/6. LCM of 3 and 6 is 6. 1/3 = 2/6. 2/6 + 1/6 = 3/6 = 1/2. Combining gives 3 1/2.",
   },
+
+  // --- Expanded Curriculum Questions (25 additional) ---
+  // Concept 1: Fraction Basics
+  q_fb_06: {
+    questionId: "q_fb_06",
+    correctAnswerId: "opt_b",
+    explanation:
+      "One hour has 60 minutes. 45 minutes out of 60 is 45/60. Dividing numerator and denominator by 15 gives 3/4.",
+  },
+  q_fb_07: {
+    questionId: "q_fb_07",
+    correctAnswerId: "opt_a",
+    explanation:
+      "When 1 whole meter is divided into 10 equal portions, each portion is 1/10 meter. Taking 7 such portions gives 7/10 meter.",
+  },
+  q_fb_08: {
+    questionId: "q_fb_08",
+    correctAnswerId: "opt_c",
+    explanation:
+      "A fraction is strictly greater than 1 when its numerator is greater than its denominator. In 9/7, 9 > 7, so it represents more than one whole.",
+  },
+  q_fb_09: {
+    questionId: "q_fb_09",
+    correctAnswerId: "opt_b",
+    explanation:
+      "Out of 20 apples, 5 are green, which leaves 20 - 5 = 15 red apples. The fraction of red apples is therefore 15/20 (or 3/4).",
+  },
+  q_fb_10: {
+    questionId: "q_fb_10",
+    correctAnswerId: "opt_b",
+    explanation:
+      "The number of girls is (3/8) × 40 = 15. The remaining students are boys: 40 - 15 = 25 boys (or 5/8 × 40 = 25).",
+  },
+
+  // Concept 2: Common Multiples & LCM
+  q_cm_06: {
+    questionId: "q_cm_06",
+    correctAnswerId: "opt_b",
+    explanation:
+      "Both 3 and 5 are prime numbers. Since they have no shared factors other than 1, their LCM is their direct product: 3 × 5 = 15.",
+  },
+  q_cm_07: {
+    questionId: "q_cm_07",
+    correctAnswerId: "opt_a",
+    explanation:
+      "Multiples of 6 are 6, 12, 18, 24... Multiples of 9 are 9, 18, 27... The lowest common multiple is 18.",
+  },
+  q_cm_08: {
+    questionId: "q_cm_08",
+    correctAnswerId: "opt_b",
+    explanation:
+      "Prime factorizations: 6 = 2 × 3, 8 = 2³, 12 = 2² × 3. LCM = 2³ × 3 = 8 × 3 = 24.",
+  },
+  q_cm_09: {
+    questionId: "q_cm_09",
+    correctAnswerId: "opt_b",
+    explanation:
+      "The bells toll together at the LCM of 12 and 18. LCM(12, 18) = 36 minutes. 36 minutes after 9:00 AM is 9:36 AM.",
+  },
+  q_cm_10: {
+    questionId: "q_cm_10",
+    correctAnswerId: "opt_a",
+    explanation:
+      "For any two numbers: Product = LCM × HCF. Therefore, LCM = Product / HCF = 180 / 3 = 60.",
+  },
+
+  // Concept 3: Equivalent Fractions
+  q_ef_06: {
+    questionId: "q_ef_06",
+    correctAnswerId: "opt_a",
+    explanation:
+      "To obtain denominator 16 from 2, multiply both numerator and denominator by 8: (1 × 8) / (2 × 8) = 8/16.",
+  },
+  q_ef_07: {
+    questionId: "q_ef_07",
+    correctAnswerId: "opt_b",
+    explanation:
+      "The Highest Common Factor of 15 and 25 is 5. Dividing both parts by 5 gives (15 ÷ 5) / (25 ÷ 5) = 3/5.",
+  },
+  q_ef_08: {
+    questionId: "q_ef_08",
+    correctAnswerId: "opt_b",
+    explanation:
+      "Since 28 = 4 × 7, we scale the denominator by the same multiplier 7: 9 × 7 = 63. Thus, 4/9 = 28/63.",
+  },
+  q_ef_09: {
+    questionId: "q_ef_09",
+    correctAnswerId: "opt_d",
+    explanation:
+      "4/10 = 2/5, 6/15 = 2/5, and 8/20 = 2/5. However, 10/22 reduces to 5/11, which does not equal 2/5.",
+  },
+  q_ef_10: {
+    questionId: "q_ef_10",
+    correctAnswerId: "opt_c",
+    explanation:
+      "The HCF of 48 and 72 is 24. Dividing numerator and denominator by 24 gives (48 ÷ 24) / (72 ÷ 24) = 2/3.",
+  },
+
+  // Concept 4: Adding Fractions
+  q_af_06: {
+    questionId: "q_af_06",
+    correctAnswerId: "opt_b",
+    explanation:
+      "With common denominator 9, add the numerators: 2 + 4 = 6. Result: 6/9 (which reduces to 2/3).",
+  },
+  q_af_07: {
+    questionId: "q_af_07",
+    correctAnswerId: "opt_b",
+    explanation:
+      "5 and 3 are coprime numbers. Their lowest common denominator is their product: 5 × 3 = 15.",
+  },
+  q_af_08: {
+    questionId: "q_af_08",
+    correctAnswerId: "opt_b",
+    explanation:
+      "The LCM of 10 and 5 is 10. Convert 2/5 to tenths: 2/5 = 4/10. Now add: 3/10 + 4/10 = 7/10.",
+  },
+  q_af_09: {
+    questionId: "q_af_09",
+    correctAnswerId: "opt_b",
+    explanation:
+      "LCM of 3 and 6 is 6. Convert: 1/3 = 2/6 cup. Total = 2/6 + 1/6 = 3/6 cup, which simplifies to 1/2 cup.",
+  },
+  q_af_10: {
+    questionId: "q_af_10",
+    correctAnswerId: "opt_b",
+    explanation:
+      "LCM of 12 and 18 is 36. Convert: 5/12 = 15/36 and 7/18 = 14/36. Adding yields (15 + 14) / 36 = 29/36.",
+  },
+
+  // Concept 5: Mixed Fractions
+  q_mf_06: {
+    questionId: "q_mf_06",
+    correctAnswerId: "opt_a",
+    explanation:
+      "Dividing 7 by 2 yields a quotient of 3 with a remainder of 1. Hence, 7/2 = 3 1/2.",
+  },
+  q_mf_07: {
+    questionId: "q_mf_07",
+    correctAnswerId: "opt_a",
+    explanation:
+      "To convert 3 2/5: multiply the whole number by denominator and add numerator: (3 × 5 + 2) / 5 = (15 + 2) / 5 = 17/5.",
+  },
+  q_mf_08: {
+    questionId: "q_mf_08",
+    correctAnswerId: "opt_a",
+    explanation:
+      "Sum whole parts: 2 + 3 = 5. Sum fraction parts: 1/4 + 1/4 = 2/4 = 1/2. Combined: 5 1/2.",
+  },
+  q_mf_09: {
+    questionId: "q_mf_09",
+    correctAnswerId: "opt_b",
+    explanation:
+      "Whole parts: 1 + 2 = 3. Fractional parts: 2/3 + 1/6 = 4/6 + 1/6 = 5/6. Combined: 3 5/6.",
+  },
+  q_mf_10: {
+    questionId: "q_mf_10",
+    correctAnswerId: "opt_b",
+    explanation:
+      "Sum: 2 1/2 + 3 3/4 = 2 2/4 + 3 3/4 = 5 5/4. Since 5/4 = 1 1/4, the total is 5 + 1 1/4 = 6 1/4 km.",
+  },
 };

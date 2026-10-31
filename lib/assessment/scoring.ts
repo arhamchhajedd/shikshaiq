@@ -1,4 +1,4 @@
-import { ConceptId, MasteryStatus } from "../../types/curriculum";
+import { ConceptId, MasteryStatus, PublicQuestion } from "../../types/curriculum";
 import {
   AssessmentResult,
   ConceptResult,
@@ -6,7 +6,7 @@ import {
   StudentAnswer,
 } from "../../types/assessment";
 import { CONCEPTS, CONCEPTS_LIST } from "../curriculum/concepts";
-import { DIAGNOSTIC_QUESTIONS } from "../curriculum/questions";
+import { DIAGNOSTIC_QUESTIONS, ALL_QUESTIONS } from "../curriculum/questions";
 import { ANSWER_KEYS } from "../curriculum/answerKeys.server";
 
 export function evaluateMasteryStatus(
@@ -95,15 +95,49 @@ export function determineRecommendedNextStep(
 }
 
 export function scoreAssessment(
-  submittedAnswers: StudentAnswer[]
+  submittedAnswers: StudentAnswer[],
+  customQuestionPool?: PublicQuestion[]
 ): AssessmentResult {
   const answerMap = new Map<string, string>();
   for (const ans of submittedAnswers) {
     answerMap.set(ans.questionId, ans.selectedOptionId);
   }
 
-  // Group questions by concept
-  const conceptQuestionsMap: Record<ConceptId, typeof DIAGNOSTIC_QUESTIONS> = {
+  // Determine target question pool:
+  // 1. Explicit pool if provided
+  // 2. Questions derived from submitted answers if any answer belongs to extended ALL_QUESTIONS
+  // 3. Fallback to standard baseline DIAGNOSTIC_QUESTIONS
+  let targetQuestions: PublicQuestion[];
+
+  if (customQuestionPool && customQuestionPool.length > 0) {
+    targetQuestions = customQuestionPool;
+  } else {
+    const allQuestionsMap = new Map<string, PublicQuestion>(
+      ALL_QUESTIONS.map((q) => [q.id, q])
+    );
+    const derivedQuestions: PublicQuestion[] = [];
+    let hasNonDiagnostic = false;
+
+    const diagIds = new Set(DIAGNOSTIC_QUESTIONS.map((q) => q.id));
+    for (const ans of submittedAnswers) {
+      if (!diagIds.has(ans.questionId)) {
+        hasNonDiagnostic = true;
+      }
+      const found = allQuestionsMap.get(ans.questionId);
+      if (found) {
+        derivedQuestions.push(found);
+      }
+    }
+
+    if (hasNonDiagnostic && derivedQuestions.length > 0) {
+      targetQuestions = derivedQuestions;
+    } else {
+      targetQuestions = DIAGNOSTIC_QUESTIONS;
+    }
+  }
+
+  // Group target questions by concept
+  const conceptQuestionsMap: Record<ConceptId, PublicQuestion[]> = {
     "fraction-basics": [],
     "common-multiples": [],
     "equivalent-fractions": [],
@@ -111,7 +145,7 @@ export function scoreAssessment(
     "mixed-fractions": [],
   };
 
-  for (const q of DIAGNOSTIC_QUESTIONS) {
+  for (const q of targetQuestions) {
     conceptQuestionsMap[q.conceptId].push(q);
   }
 

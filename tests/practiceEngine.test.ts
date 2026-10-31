@@ -58,7 +58,7 @@ describe("Phase 04 Curriculum — Lessons Completeness & Integrity", () => {
 describe("Phase 04 Practice Question Bank & Answer Key Integrity", () => {
   it("ensures every practice question has a protected server-side answer key with explanation", () => {
     assert.strictEqual(PRACTICE_QUESTIONS.length, 10, "Must have 10 practice questions");
-    assert.strictEqual(ALL_QUESTIONS.length, 25, "Must have 25 total curriculum questions");
+    assert.strictEqual(ALL_QUESTIONS.length, 50, "Must have 50 total curriculum questions");
 
     for (const question of ALL_QUESTIONS) {
       const key = ANSWER_KEYS[question.id];
@@ -77,7 +77,7 @@ describe("Phase 04 Practice Question Bank & Answer Key Integrity", () => {
 
   it("filters questions by concept correctly with difficulty prioritization", () => {
     const fractionBasics = getQuestionsForConcept("fraction-basics");
-    assert.strictEqual(fractionBasics.length, 5, "Each concept must have 5 questions in total bank");
+    assert.strictEqual(fractionBasics.length, 10, "Each concept must have 10 questions in total bank");
 
     const easyFirst = getQuestionsForConcept("fraction-basics", "easy");
     assert.strictEqual(easyFirst[0].difficulty, "easy", "First item must be easy when requested");

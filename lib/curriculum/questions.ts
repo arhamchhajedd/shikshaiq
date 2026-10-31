@@ -349,9 +349,347 @@ export const PRACTICE_QUESTIONS: PublicQuestion[] = [
   },
 ];
 
+export const ADDITIONAL_CURRICULUM_QUESTIONS: PublicQuestion[] = [
+  // --- Concept 1: Fraction Basics (5 additional: q_fb_06 to q_fb_10) ---
+  {
+    id: "q_fb_06",
+    conceptId: "fraction-basics",
+    prompt: "What fraction of an hour is 45 minutes?",
+    options: [
+      { id: "opt_a", text: "1/2" },
+      { id: "opt_b", text: "3/4" },
+      { id: "opt_c", text: "2/3" },
+      { id: "opt_d", text: "4/5" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Calculate fractional units of time.",
+  },
+  {
+    id: "q_fb_07",
+    conceptId: "fraction-basics",
+    prompt: "If a ribbon of length 1 meter is cut into 10 equal pieces, what is the length of 7 such pieces?",
+    options: [
+      { id: "opt_a", text: "7/10 meter" },
+      { id: "opt_b", text: "3/10 meter" },
+      { id: "opt_c", text: "10/7 meters" },
+      { id: "opt_d", text: "1/7 meter" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Model parts of a linear measurement as fractions.",
+  },
+  {
+    id: "q_fb_08",
+    conceptId: "fraction-basics",
+    prompt: "Which of the following fractions is strictly greater than 1 (an improper fraction)?",
+    options: [
+      { id: "opt_a", text: "5/6" },
+      { id: "opt_b", text: "8/8" },
+      { id: "opt_c", text: "9/7" },
+      { id: "opt_d", text: "3/4" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Identify fractions greater than one whole.",
+  },
+  {
+    id: "q_fb_09",
+    conceptId: "fraction-basics",
+    prompt: "A fruit basket contains 20 apples. 5 of them are green and the remainder are red. What fraction of the apples are red?",
+    options: [
+      { id: "opt_a", text: "5/20" },
+      { id: "opt_b", text: "15/20" },
+      { id: "opt_c", text: "20/15" },
+      { id: "opt_d", text: "10/20" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Compute fractional subsets in real-world collections.",
+  },
+  {
+    id: "q_fb_10",
+    conceptId: "fraction-basics",
+    prompt: "In a class of 40 students, 3/8 of the students are girls. How many boys are in the class?",
+    options: [
+      { id: "opt_a", text: "15" },
+      { id: "opt_b", text: "25" },
+      { id: "opt_c", text: "20" },
+      { id: "opt_d", text: "30" },
+    ],
+    difficulty: "hard",
+    learningObjective: "Solve multi-step fractional word problems.",
+  },
+
+  // --- Concept 2: Common Multiples & LCM (5 additional: q_cm_06 to q_cm_10) ---
+  {
+    id: "q_cm_06",
+    conceptId: "common-multiples",
+    prompt: "What is the Least Common Multiple (LCM) of 3 and 5?",
+    options: [
+      { id: "opt_a", text: "8" },
+      { id: "opt_b", text: "15" },
+      { id: "opt_c", text: "10" },
+      { id: "opt_d", text: "12" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Find the LCM of two prime integers.",
+  },
+  {
+    id: "q_cm_07",
+    conceptId: "common-multiples",
+    prompt: "What is the smallest common denominator required to add 1/6 and 1/9?",
+    options: [
+      { id: "opt_a", text: "18" },
+      { id: "opt_b", text: "54" },
+      { id: "opt_c", text: "15" },
+      { id: "opt_d", text: "36" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Identify lowest common denominator using LCM.",
+  },
+  {
+    id: "q_cm_08",
+    conceptId: "common-multiples",
+    prompt: "Find the Least Common Multiple (LCM) of 6, 8, and 12.",
+    options: [
+      { id: "opt_a", text: "48" },
+      { id: "opt_b", text: "24" },
+      { id: "opt_c", text: "72" },
+      { id: "opt_d", text: "36" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Compute LCM across three composite integers.",
+  },
+  {
+    id: "q_cm_09",
+    conceptId: "common-multiples",
+    prompt: "Two bells toll together at 9:00 AM. One tolls every 12 minutes and the other every 18 minutes. At what time will they toll together next?",
+    options: [
+      { id: "opt_a", text: "9:30 AM" },
+      { id: "opt_b", text: "9:36 AM" },
+      { id: "opt_c", text: "9:48 AM" },
+      { id: "opt_d", text: "10:00 AM" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Apply LCM to periodic scheduling problems.",
+  },
+  {
+    id: "q_cm_10",
+    conceptId: "common-multiples",
+    prompt: "The product of two positive numbers is 180 and their Highest Common Factor (HCF) is 3. What is their LCM?",
+    options: [
+      { id: "opt_a", text: "60" },
+      { id: "opt_b", text: "540" },
+      { id: "opt_c", text: "30" },
+      { id: "opt_d", text: "90" },
+    ],
+    difficulty: "hard",
+    learningObjective: "Use the product formula Product = LCM x HCF.",
+  },
+
+  // --- Concept 3: Equivalent Fractions (5 additional: q_ef_06 to q_ef_10) ---
+  {
+    id: "q_ef_06",
+    conceptId: "equivalent-fractions",
+    prompt: "Which fraction is equivalent to 1/2 with denominator 16?",
+    options: [
+      { id: "opt_a", text: "8/16" },
+      { id: "opt_b", text: "4/16" },
+      { id: "opt_c", text: "6/16" },
+      { id: "opt_d", text: "2/16" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Scale a unit fraction to a designated denominator.",
+  },
+  {
+    id: "q_ef_07",
+    conceptId: "equivalent-fractions",
+    prompt: "What is the fraction 15/25 reduced to its simplest form?",
+    options: [
+      { id: "opt_a", text: "5/3" },
+      { id: "opt_b", text: "3/5" },
+      { id: "opt_c", text: "1/5" },
+      { id: "opt_d", text: "3/4" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Simplify fractions by dividing by the common factor 5.",
+  },
+  {
+    id: "q_ef_08",
+    conceptId: "equivalent-fractions",
+    prompt: "Find the missing denominator to make the fractions equivalent: 4/9 = 28/?",
+    options: [
+      { id: "opt_a", text: "54" },
+      { id: "opt_b", text: "63" },
+      { id: "opt_c", text: "72" },
+      { id: "opt_d", text: "36" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Compute unknown denominator in equivalent fractions.",
+  },
+  {
+    id: "q_ef_09",
+    conceptId: "equivalent-fractions",
+    prompt: "Which of the following fractions is NOT equivalent to 2/5?",
+    options: [
+      { id: "opt_a", text: "4/10" },
+      { id: "opt_b", text: "6/15" },
+      { id: "opt_c", text: "8/20" },
+      { id: "opt_d", text: "10/22" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Identify non-equivalent fractions through scaling check.",
+  },
+  {
+    id: "q_ef_10",
+    conceptId: "equivalent-fractions",
+    prompt: "Reduce the fraction 48/72 to its simplest form (lowest terms).",
+    options: [
+      { id: "opt_a", text: "4/6" },
+      { id: "opt_b", text: "6/9" },
+      { id: "opt_c", text: "2/3" },
+      { id: "opt_d", text: "3/4" },
+    ],
+    difficulty: "hard",
+    learningObjective: "Reduce larger numbers using highest common factor (24).",
+  },
+
+  // --- Concept 4: Adding Fractions (5 additional: q_af_06 to q_af_10) ---
+  {
+    id: "q_af_06",
+    conceptId: "adding-fractions",
+    prompt: "What is the sum of 2/9 + 4/9?",
+    options: [
+      { id: "opt_a", text: "6/18" },
+      { id: "opt_b", text: "6/9" },
+      { id: "opt_c", text: "8/9" },
+      { id: "opt_d", text: "2/9" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Add like fractions keeping the common denominator.",
+  },
+  {
+    id: "q_af_07",
+    conceptId: "adding-fractions",
+    prompt: "What common denominator should be used to add 1/5 and 2/3?",
+    options: [
+      { id: "opt_a", text: "8" },
+      { id: "opt_b", text: "15" },
+      { id: "opt_c", text: "10" },
+      { id: "opt_d", text: "20" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Determine common denominator for prime denominators.",
+  },
+  {
+    id: "q_af_08",
+    conceptId: "adding-fractions",
+    prompt: "Calculate: 3/10 + 2/5. Express your answer in simplest form.",
+    options: [
+      { id: "opt_a", text: "5/15" },
+      { id: "opt_b", text: "7/10" },
+      { id: "opt_c", text: "5/10" },
+      { id: "opt_d", text: "1/2" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Add fractions where one denominator is a multiple of the other.",
+  },
+  {
+    id: "q_af_09",
+    conceptId: "adding-fractions",
+    prompt: "A recipe requires 1/3 cup of olive oil and 1/6 cup of lemon juice. What is the total liquid added?",
+    options: [
+      { id: "opt_a", text: "2/9 cup" },
+      { id: "opt_b", text: "1/2 cup" },
+      { id: "opt_c", text: "3/6 cup" },
+      { id: "opt_d", text: "2/6 cup" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Add unlike fractions in real-world cooking measurements.",
+  },
+  {
+    id: "q_af_10",
+    conceptId: "adding-fractions",
+    prompt: "Evaluate: 5/12 + 7/18. Give your answer in lowest terms.",
+    options: [
+      { id: "opt_a", text: "12/30" },
+      { id: "opt_b", text: "29/36" },
+      { id: "opt_c", text: "31/36" },
+      { id: "opt_d", text: "17/36" },
+    ],
+    difficulty: "hard",
+    learningObjective: "Add unlike fractions requiring composite LCM calculation.",
+  },
+
+  // --- Concept 5: Mixed Fractions (5 additional: q_mf_06 to q_mf_10) ---
+  {
+    id: "q_mf_06",
+    conceptId: "mixed-fractions",
+    prompt: "Which mixed numeral is equivalent to the improper fraction 7/2?",
+    options: [
+      { id: "opt_a", text: "3 1/2" },
+      { id: "opt_b", text: "2 1/2" },
+      { id: "opt_c", text: "3 1/4" },
+      { id: "opt_d", text: "4 1/2" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Convert improper fraction with denominator 2 to mixed numeral.",
+  },
+  {
+    id: "q_mf_07",
+    conceptId: "mixed-fractions",
+    prompt: "Convert the mixed fraction 3 2/5 into an improper fraction.",
+    options: [
+      { id: "opt_a", text: "17/5" },
+      { id: "opt_b", text: "15/5" },
+      { id: "opt_c", text: "11/5" },
+      { id: "opt_d", text: "21/5" },
+    ],
+    difficulty: "easy",
+    learningObjective: "Convert mixed numeral to improper fraction.",
+  },
+  {
+    id: "q_mf_08",
+    conceptId: "mixed-fractions",
+    prompt: "Add the mixed numerals: 2 1/4 + 3 1/4.",
+    options: [
+      { id: "opt_a", text: "5 1/2" },
+      { id: "opt_b", text: "5 2/8" },
+      { id: "opt_c", text: "6 1/4" },
+      { id: "opt_d", text: "5 1/4" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Add mixed numerals with like denominators and simplify.",
+  },
+  {
+    id: "q_mf_09",
+    conceptId: "mixed-fractions",
+    prompt: "Calculate: 1 2/3 + 2 1/6 = ?",
+    options: [
+      { id: "opt_a", text: "3 3/9" },
+      { id: "opt_b", text: "3 5/6" },
+      { id: "opt_c", text: "4 1/6" },
+      { id: "opt_d", text: "3 1/2" },
+    ],
+    difficulty: "medium",
+    learningObjective: "Add mixed numerals with unlike denominators using LCM.",
+  },
+  {
+    id: "q_mf_10",
+    conceptId: "mixed-fractions",
+    prompt: "Raman walked 2 1/2 km in the morning and 3 3/4 km in the evening. What is the total distance he walked?",
+    options: [
+      { id: "opt_a", text: "5 4/6 km" },
+      { id: "opt_b", text: "6 1/4 km" },
+      { id: "opt_c", text: "6 1/2 km" },
+      { id: "opt_d", text: "5 3/4 km" },
+    ],
+    difficulty: "hard",
+    learningObjective: "Solve multi-step mixed fraction contextual distance problems.",
+  },
+];
+
 export const ALL_QUESTIONS: PublicQuestion[] = [
   ...DIAGNOSTIC_QUESTIONS,
   ...PRACTICE_QUESTIONS,
+  ...ADDITIONAL_CURRICULUM_QUESTIONS,
 ];
 
 export function getQuestionsForConcept(

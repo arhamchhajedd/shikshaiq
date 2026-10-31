@@ -2,6 +2,27 @@
 
 All notable changes to the ShikshaIQ codebase are documented in this file.
 
+## [Anti-Cheat & Question Bank Expansion] - 2026-10-31
+
+### Added
+- **Expanded Question Bank (50 Questions):**
+  - Added 25 new NCERT Class 7 Fractions questions across all 5 concepts (10 questions per concept: Fraction Basics, Common Multiples, Equivalent Fractions, Adding Fractions, Mixed Fractions).
+  - Authored matching server-only answer keys with full pedagogical explanations in [`lib/curriculum/answerKeys.server.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/lib/curriculum/answerKeys.server.ts) (Zero client leakage).
+  - Created idempotent SQL migration [`supabase/migrations/20261031000000_expanded_question_bank.sql`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/supabase/migrations/20261031000000_expanded_question_bank.sql).
+- **Assessment Randomizer Engine ([`lib/assessment/randomizer.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/lib/assessment/randomizer.ts)):**
+  - Stratified sampling selecting 3 questions per concept (15 questions total) from the pool of 50.
+  - Fisher-Yates shuffle algorithm for question sequence randomization.
+  - Option shuffling per question so choice order (A, B, C, D) is randomized independently for each student.
+- **Session Persistence & Anti-Cheat UI:**
+  - Integrated `sessionStorage` caching in [`app/(student)/student/assessment/page.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/app/(student)/student/assessment/page.tsx) to protect against reload loss while preventing quiz reshuffling during active exams.
+  - Added visual "Randomized Anti-Cheat Order" status badge in diagnostic quiz header.
+  - Cleared session storage automatically upon submission.
+- **Dynamic Assessment Scoring ([`lib/assessment/scoring.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/lib/assessment/scoring.ts)):**
+  - Enhanced `scoreAssessment` and `/api/assessment/submit` to dynamically evaluate any subset of questions from the expanded 50-question bank while preserving backward compatibility for baseline persona fixtures.
+- **Automated Tests:**
+  - Added 5 new unit tests in [`tests/randomizer.test.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/tests/randomizer.test.ts) covering permutation integrity, option randomization, stratified sampling, session uniqueness, and deterministic PRNG reproduction.
+  - Expanded total test suite to **107 passing tests across 39 suites** (`npm test`).
+
 ## [Phase 09] - 2026-10-30
 
 ### Added

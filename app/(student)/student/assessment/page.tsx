@@ -16,23 +16,28 @@ import {
   Loader2,
   ListFilter,
   BookOpen,
+  Shuffle,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { DIAGNOSTIC_QUESTIONS } from "@/lib/curriculum/questions";
+import { ALL_QUESTIONS } from "@/lib/curriculum/questions";
 import { PublicQuestion } from "@/types/curriculum";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { saveStoredResult } from "@/lib/demo/state";
+import { generateDiagnosticQuizSession } from "@/lib/assessment/randomizer";
+
+const SESSION_STORAGE_QUIZ_KEY = "shikshaiq_diagnostic_session_questions";
+const SESSION_STORAGE_ANSWERS_KEY = "shikshaiq_diagnostic_session_answers";
 
 export default function DiagnosticAssessmentPage() {
   const router = useRouter();
 
   // Questions State
-  const [questions, setQuestions] = useState<PublicQuestion[]>(DIAGNOSTIC_QUESTIONS);
+  const [questions, setQuestions] = useState<PublicQuestion[]>([]);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState<boolean>(true);
 
   // Assessment Runner State
@@ -43,42 +48,86 @@ export default function DiagnosticAssessmentPage() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Load questions from Supabase if configured
+  // Load questions and generate anti-cheat randomized session
   useEffect(() => {
-    async function fetchQuestions() {
-      if (!isSupabaseConfigured()) {
-        setIsLoadingQuestions(false);
-        return;
-      }
+    async function initQuizSession() {
+      // 1. Check if the student already has an active randomized session saved in sessionStorage
+      if (typeof window !== "undefined") {
+        try {
+          const cachedSession = window.sessionStorage.getItem(SESSION_STORAGE_QUIZ_KEY);
+          const cachedAnswers = window.sessionStorage.getItem(SESSION_STORAGE_ANSWERS_KEY);
 
-      try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("questions")
-          .select("id, concept_id, prompt, difficulty, question_type, options, learning_objective")
-          .order("id");
-
-        if (error) {
-          console.warn("Could not fetch questions from Supabase, using authored curriculum:", error.message);
-        } else if (data && data.length > 0) {
-          const mapped: PublicQuestion[] = data.map((row) => ({
-            id: row.id,
-            conceptId: row.concept_id,
-            prompt: row.prompt,
-            difficulty: row.difficulty,
-            options: row.options as { id: string; text: string }[],
-            learningObjective: row.learning_objective || undefined,
-          }));
-          setQuestions(mapped);
+          if (cachedSession) {
+            const parsedQuestions = JSON.parse(cachedSession) as PublicQuestion[];
+            if (Array.isArray(parsedQuestions) && parsedQuestions.length > 0) {
+              setQuestions(parsedQuestions);
+              if (cachedAnswers) {
+                setAnswers(JSON.parse(cachedAnswers) as Record<string, string>);
+              }
+              setIsLoadingQuestions(false);
+              return;
+            }
+          }
+        } catch (e) {
+          console.warn("Could not read previous diagnostic quiz session from storage:", e);
         }
-      } catch (err) {
-        console.warn("Error reading questions from database:", err);
-      } finally {
-        setIsLoadingQuestions(false);
       }
+
+      // 2. Fetch raw question pool (authored curriculum merged with Supabase database questions)
+      const poolMap = new Map<string, PublicQuestion>(ALL_QUESTIONS.map((q) => [q.id, q]));
+
+      if (isSupabaseConfigured()) {
+        try {
+          const supabase = createClient();
+          const { data, error } = await supabase
+            .from("questions")
+            .select("id, concept_id, prompt, difficulty, question_type, options, learning_objective");
+
+          if (error) {
+            console.warn("Could not fetch questions from Supabase, using authored curriculum:", error.message);
+          } else if (data && data.length > 0) {
+            for (const row of data) {
+              poolMap.set(row.id, {
+                id: row.id,
+                conceptId: row.concept_id,
+                prompt: row.prompt,
+                difficulty: row.difficulty,
+                options: row.options as { id: string; text: string }[],
+                learningObjective: row.learning_objective || undefined,
+              });
+            }
+          }
+        } catch (err) {
+          console.warn("Error reading questions from database:", err);
+        }
+      }
+
+      const rawPool = Array.from(poolMap.values());
+
+      // 3. Generate randomized quiz session (stratified selection + shuffled questions + shuffled options)
+      const randomizedSession = generateDiagnosticQuizSession(rawPool, {
+        questionsPerConcept: 3,
+        shuffleQuestions: true,
+        shuffleOptions: true,
+      });
+
+      // 4. Persist generated quiz in sessionStorage so reload preserves student state
+      if (typeof window !== "undefined") {
+        try {
+          window.sessionStorage.setItem(
+            SESSION_STORAGE_QUIZ_KEY,
+            JSON.stringify(randomizedSession)
+          );
+        } catch (e) {
+          console.warn("Failed to persist diagnostic session in sessionStorage:", e);
+        }
+      }
+
+      setQuestions(randomizedSession);
+      setIsLoadingQuestions(false);
     }
 
-    void fetchQuestions();
+    void initQuizSession();
   }, []);
 
   const totalQuestions = questions.length;
@@ -87,10 +136,23 @@ export default function DiagnosticAssessmentPage() {
 
   // Handle option select
   const handleSelectOption = (questionId: string, optionId: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: optionId,
-    }));
+    setAnswers((prev) => {
+      const updated = {
+        ...prev,
+        [questionId]: optionId,
+      };
+      if (typeof window !== "undefined") {
+        try {
+          window.sessionStorage.setItem(
+            SESSION_STORAGE_ANSWERS_KEY,
+            JSON.stringify(updated)
+          );
+        } catch (e) {
+          console.warn("Could not persist answers in sessionStorage:", e);
+        }
+      }
+      return updated;
+    });
     setErrorMessage(null);
   };
 
@@ -144,6 +206,13 @@ export default function DiagnosticAssessmentPage() {
 
       const data = await response.json();
       saveStoredResult(data.result);
+
+      // Clean up sessionStorage session after successful submission
+      if (typeof window !== "undefined") {
+        window.sessionStorage.removeItem(SESSION_STORAGE_QUIZ_KEY);
+        window.sessionStorage.removeItem(SESSION_STORAGE_ANSWERS_KEY);
+      }
+
       router.push("/student/results");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed. Please try again.";
@@ -167,10 +236,15 @@ export default function DiagnosticAssessmentPage() {
             <span>Return to Dashboard</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             <div className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-600 bg-white px-3 py-1.5 rounded-full border border-black/[0.08] shadow-2xs">
               <Clock className="h-3.5 w-3.5 text-zinc-400" />
               <span>Self-Paced Diagnostic</span>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200/60 shadow-2xs">
+              <Shuffle className="h-3 w-3 text-emerald-600" />
+              <span>Randomized Anti-Cheat Order</span>
             </div>
 
             <Button

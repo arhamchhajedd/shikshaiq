@@ -9,7 +9,7 @@ import {
   StudentAttemptInput,
 } from "@/lib/adaptive";
 import { ConceptId } from "@/types/curriculum";
-import { DIAGNOSTIC_QUESTIONS } from "@/lib/curriculum/questions";
+import { ALL_QUESTIONS } from "@/lib/curriculum/questions";
 import { ANSWER_KEYS } from "@/lib/curriculum/answerKeys.server";
 
 export async function POST(request: NextRequest) {
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Map answers to StudentAttemptInput
-      const questionMap = new Map(DIAGNOSTIC_QUESTIONS.map((q) => [q.id, q]));
+      const questionMap = new Map(ALL_QUESTIONS.map((q) => [q.id, q]));
       const attemptInputs: StudentAttemptInput[] = [];
 
       for (const a of answers) {

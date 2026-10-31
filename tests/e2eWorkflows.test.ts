@@ -18,8 +18,8 @@ import { PendingAttempt } from "../types/offline";
 import nextConfig from "../next.config";
 
 describe("E2E Suite 1 — Public Website, Manifest & Routing", () => {
-  test("Public curriculum question bank contains all 25 NCERT Class 7 questions", () => {
-    assert.equal(ALL_QUESTIONS.length, 25);
+  test("Public curriculum question bank contains all 50 NCERT Class 7 questions", () => {
+    assert.equal(ALL_QUESTIONS.length, 50);
     const conceptIds = new Set(ALL_QUESTIONS.map((q) => q.conceptId));
     assert.equal(conceptIds.size, 5, "All 5 concepts must have practice questions");
   });
@@ -257,7 +257,7 @@ describe("E2E Suite 5 — Administrator Workflow & Question Inspector", () => {
       assert.equal((q as unknown as Record<string, unknown>).correctAnswerId, undefined);
     }
 
-    // Privileged admin inspector access has all 25 answer keys
+    // Privileged admin inspector access has all 50 answer keys
     let adminKeysFound = 0;
     for (const q of ALL_QUESTIONS) {
       const key = ANSWER_KEYS[q.id];
@@ -265,7 +265,7 @@ describe("E2E Suite 5 — Administrator Workflow & Question Inspector", () => {
         adminKeysFound++;
       }
     }
-    assert.equal(adminKeysFound, 25);
+    assert.equal(adminKeysFound, 50);
   });
 
   test("Teacher approval state transition persists with audit logging", () => {

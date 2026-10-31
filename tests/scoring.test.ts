@@ -105,4 +105,32 @@ describe("scoreAssessment", () => {
     assert.ok(result.strongConcepts.includes("Common Multiples"));
     assert.ok(result.strongConcepts.includes("Adding Fractions"));
   });
+
+  test("scores randomized session sampled from expanded 50-question pool accurately", () => {
+    // Pick 5 questions from the additional pool (one per concept)
+    const sampledQuestions = [
+      "q_fb_06",
+      "q_cm_06",
+      "q_ef_06",
+      "q_af_06",
+      "q_mf_06",
+    ];
+
+    const answers: StudentAnswer[] = sampledQuestions.map((qId) => ({
+      questionId: qId,
+      selectedOptionId: ANSWER_KEYS[qId].correctAnswerId,
+    }));
+
+    const result = scoreAssessment(answers);
+
+    assert.equal(result.totalQuestions, 5);
+    assert.equal(result.totalCorrect, 5);
+    assert.equal(result.percentage, 100);
+
+    for (const qId of sampledQuestions) {
+      const review = result.questionReviews.find((r) => r.questionId === qId);
+      assert.ok(review, `Review must exist for question ${qId}`);
+      assert.equal(review.isCorrect, true);
+    }
+  });
 });

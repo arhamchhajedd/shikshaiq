@@ -55,7 +55,7 @@ export class GeminiTutorProvider implements AITutorProvider {
   private apiKey: string;
   private model: string;
 
-  constructor(apiKey: string, model: string = "gemini-1.5-flash") {
+  constructor(apiKey: string, model: string = "gemini-3.5-flash-lite") {
     this.apiKey = apiKey;
     this.model = model;
   }
@@ -101,7 +101,7 @@ export class GeminiTutorProvider implements AITutorProvider {
     };
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const timeout = setTimeout(() => controller.abort(), 45000);
 
     try {
       const response = await fetch(endpoint, {
@@ -180,7 +180,7 @@ export class OpenAITutorProvider implements AITutorProvider {
     };
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const timeout = setTimeout(() => controller.abort(), 45000);
 
     try {
       const response = await fetch(endpoint, {
@@ -227,12 +227,12 @@ export function getTutorProvider(): AITutorProvider {
   }
 
   if (preferredProvider === "gemini" && geminiKey) {
-    return new GeminiTutorProvider(geminiKey, customModel || "gemini-1.5-flash");
+    return new GeminiTutorProvider(geminiKey, customModel || "gemini-3.5-flash-lite");
   }
 
   // Auto-detection
   if (geminiKey) {
-    return new GeminiTutorProvider(geminiKey, customModel || "gemini-1.5-flash");
+    return new GeminiTutorProvider(geminiKey, customModel || "gemini-3.5-flash-lite");
   }
 
   if (openAiKey) {

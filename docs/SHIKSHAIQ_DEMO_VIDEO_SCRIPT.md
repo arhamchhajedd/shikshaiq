@@ -209,3 +209,4 @@
    - 1.15x slight zoom-in on critical UI micro-interactions (e.g. clicking the "Simulate Live Quiz" button, the multilingual AI tutor toggle, and the audit log).
 3. **Captions:**
    - Include auto-captions with white sans-serif text and subtle black outline at the bottom center.
+

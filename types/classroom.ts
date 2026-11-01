@@ -3,6 +3,8 @@
  * Phase 05: Teacher Dashboard & Classroom Management
  */
 
+import { ConceptMasteryRecord } from "@/lib/adaptive";
+
 export interface Classroom {
   id: string;
   name: string;
@@ -34,6 +36,7 @@ export interface ClassroomStudent {
   needsRevisionCount: number;
   partialCount: number;
   notStartedCount: number;
+  conceptRecords?: Record<string, ConceptMasteryRecord>;
 }
 
 export interface CreateClassroomInput {

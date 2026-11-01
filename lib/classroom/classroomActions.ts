@@ -6,6 +6,8 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { Classroom, ClassroomWithStudentCount, ClassroomStudent } from "@/types/classroom";
 import { CONCEPTS } from "@/lib/curriculum/concepts";
+import { ConceptMasteryRecord } from "@/lib/adaptive";
+import { ConceptId } from "@/types/curriculum";
 
 const createClassroomSchema = z.object({
   name: z.string().trim().min(3, "Classroom name must be at least 3 characters.").max(60),
@@ -282,7 +284,7 @@ export async function getClassroomRoster(
   // Fetch mastery records
   const { data: masteries } = await supabase
     .from("student_mastery")
-    .select("student_id, concept_id, status")
+    .select("student_id, concept_id, status, mastery_score, valid_evidence_count, last_evaluated_at")
     .in("student_id", studentIds);
 
   // Fetch latest activity timestamp
@@ -313,6 +315,17 @@ export async function getClassroomRoster(
     const notStartedCount =
       Object.keys(CONCEPTS).length - (masteredCount + partialCount + needsRevisionCount);
 
+    const conceptRecords: Record<string, ConceptMasteryRecord> = {};
+    for (const sm of studentMasteries) {
+      conceptRecords[sm.concept_id] = {
+        conceptId: sm.concept_id as ConceptId,
+        masteryScore: sm.mastery_score ?? (sm.status === "mastered" ? 85 : sm.status === "partial" ? 65 : 35),
+        status: sm.status,
+        validEvidenceCount: sm.valid_evidence_count ?? 1,
+        lastEvaluatedAt: sm.last_evaluated_at || new Date().toISOString(),
+      };
+    }
+
     return {
       classroomId: m.classroom_id,
       studentId: m.student_id,
@@ -325,6 +338,7 @@ export async function getClassroomRoster(
       needsRevisionCount,
       partialCount,
       notStartedCount: Math.max(0, notStartedCount),
+      conceptRecords,
     };
   });
 

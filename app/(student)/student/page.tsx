@@ -35,7 +35,12 @@ import { JoinClassroomCard } from "@/components/student/JoinClassroomCard";
 import { OfflineStatusBar } from "@/components/offline/OfflineStatusBar";
 import { OfflineDownloadButton } from "@/components/offline/OfflineDownloadButton";
 import { syncManager } from "@/lib/offline/syncManager";
-import { Download, HardDrive, CheckCircle2 } from "lucide-react";
+import { Download, HardDrive, CheckCircle2, Star } from "lucide-react";
+import { calculateStreak } from "@/lib/gamification/streakEngine";
+import { evaluateGamification } from "@/lib/gamification/badgeEngine";
+import { StreakCard } from "@/components/gamification/StreakCard";
+import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
+import { AchievementBadges } from "@/components/gamification/AchievementBadges";
 
 export default function StudentDashboardPage() {
   const isConfigured = isSupabaseConfigured();
@@ -43,6 +48,7 @@ export default function StudentDashboardPage() {
   const [masteries, setMasteries] = useState<Record<ConceptId, ConceptMasteryRecord> | null>(null);
   const [recommendation, setRecommendation] = useState<AdaptiveRecommendation | null>(null);
   const [attemptCount, setAttemptCount] = useState<number>(0);
+  const [attemptTimestamps, setAttemptTimestamps] = useState<string[]>([]);
   const [completedLessons, setCompletedLessons] = useState<ConceptId[]>([]);
   const [activeIntervention, setActiveIntervention] = useState<TeacherIntervention | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(isConfigured);
@@ -107,14 +113,18 @@ export default function StudentDashboardPage() {
           throw new Error(masteryErr.message);
         }
 
-        // 3. Count total student attempts
-        const { count: totalAttempts } = await supabase
+        // 3. Count total student attempts & fetch timestamps for streak calculation
+        const { data: attemptRows, count: totalAttempts } = await supabase
           .from("student_attempts")
-          .select("*", { count: "exact", head: true })
-          .eq("student_id", user.id);
+          .select("attempted_at", { count: "exact" })
+          .eq("student_id", user.id)
+          .order("attempted_at", { ascending: false });
 
         if (!ignore) {
           setAttemptCount(totalAttempts || 0);
+          if (attemptRows) {
+            setAttemptTimestamps(attemptRows.map((r) => r.attempted_at));
+          }
         }
 
         // 4. Load completed lessons
@@ -254,6 +264,17 @@ export default function StudentDashboardPage() {
         )
       : null;
 
+  // Compute Gamification, Badges & Learning Streak
+  const streakSummary = calculateStreak(attemptTimestamps);
+  const gamification = evaluateGamification({
+    masteries,
+    attemptCount,
+    currentStreak: streakSummary.currentStreak,
+    longestStreak: streakSummary.longestStreak,
+    completedLessons,
+    overallAccuracy,
+  });
+
   return (
     <div className="min-h-screen flex flex-col bg-[#ffffff] text-neutral-900">
       <Header />
@@ -370,6 +391,9 @@ export default function StudentDashboardPage() {
         ) : !hasMasteryData ? (
           /* EMPTY STATE: New Student with No Assessments Yet */
           <div className="space-y-8">
+            {/* Learning Practice Streak Banner */}
+            <StreakCard streak={streakSummary} />
+
             <Card className="p-8 sm:p-12 border border-black/5 rounded-3xl bg-neutral-50/50 text-center shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
               <div className="w-16 h-16 rounded-2xl bg-white border border-black/10 flex items-center justify-center mx-auto mb-5 shadow-xs">
                 <BookOpen className="w-8 h-8 text-neutral-800" />
@@ -414,6 +438,13 @@ export default function StudentDashboardPage() {
               </div>
             </Card>
 
+            {/* Achievement Badges Showcase */}
+            <AchievementBadges
+              badges={gamification.badges}
+              totalStars={gamification.totalStars}
+              maxStars={gamification.maxStars}
+            />
+
             {/* Initial Concept Roster (All Not Started) */}
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -428,7 +459,10 @@ export default function StudentDashboardPage() {
                   {CONCEPTS_LIST.map((c) => (
                     <div key={c.id} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="space-y-1">
-                        <div className="text-xs font-bold text-neutral-900">{c.title}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-neutral-900">{c.title}</span>
+                          <StarRatingDisplay stars={0} size="sm" />
+                        </div>
                         <div className="text-[11px] text-neutral-500 leading-relaxed max-w-xl">
                           {c.description}
                         </div>
@@ -463,8 +497,11 @@ export default function StudentDashboardPage() {
         ) : (
           /* ACTIVE STATE: Real Supabase Mastery & Recommendations */
           <div className="space-y-8">
+            {/* Learning Practice Streak Banner */}
+            <StreakCard streak={streakSummary} />
+
             {/* Progress & Overview Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
               <Card className="p-5 border border-black/5 rounded-2xl shadow-xs bg-white">
                 <div className="text-xs font-medium text-neutral-500 mb-1">Overall Accuracy</div>
                 <div className="text-3xl font-bold font-mono text-neutral-900">
@@ -479,6 +516,16 @@ export default function StudentDashboardPage() {
                   {masteredConcepts.length} <span className="text-sm font-normal text-neutral-400">/ 5</span>
                 </div>
                 <div className="text-[11px] text-neutral-400 mt-1">Demonstrated &ge; 80% mastery</div>
+              </Card>
+
+              <Card className="p-5 border border-black/5 rounded-2xl shadow-xs bg-white">
+                <div className="text-xs font-medium text-neutral-500 mb-1">Curriculum Stars</div>
+                <div className="text-3xl font-bold font-mono text-neutral-900 flex items-center gap-1.5">
+                  <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
+                  <span>{gamification.totalStars}</span>
+                  <span className="text-sm font-normal text-neutral-400">/ {gamification.maxStars}</span>
+                </div>
+                <div className="text-[11px] text-neutral-400 mt-1">Earned across 5 concepts</div>
               </Card>
 
               <Card className="p-5 border border-black/5 rounded-2xl shadow-xs bg-white">
@@ -505,6 +552,13 @@ export default function StudentDashboardPage() {
                 <div className="text-[11px] text-neutral-400 mt-1">Recorded responses</div>
               </Card>
             </div>
+
+            {/* Achievement Badges Showcase */}
+            <AchievementBadges
+              badges={gamification.badges}
+              totalStars={gamification.totalStars}
+              maxStars={gamification.maxStars}
+            />
 
             {/* Recommended Next Activity from Adaptive Engine */}
             {recommendation && (
@@ -588,8 +642,12 @@ export default function StudentDashboardPage() {
                         className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-neutral-50/50 transition-colors"
                       >
                         <div className="space-y-1 max-w-lg">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <span className="text-xs font-bold text-neutral-900">{concept.title}</span>
+                            <StarRatingDisplay
+                              stars={gamification.starRatings[concept.id]?.stars || 0}
+                              size="sm"
+                            />
                             {concept.prerequisites.length > 0 && (
                               <span className="text-[10px] text-neutral-400 font-mono">
                                 Requires {concept.prerequisites.length} prereq{concept.prerequisites.length > 1 ? "s" : ""}

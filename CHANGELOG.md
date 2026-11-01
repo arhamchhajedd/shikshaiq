@@ -2,7 +2,32 @@
 
 All notable changes to the ShikshaIQ codebase are documented in this file.
 
-## [Anti-Cheat & Question Bank Expansion] - 2026-10-31
+## [Live Telemetry & Student Gamification] - 2026-11-01
+
+### Added
+- **Live Real-Time Teacher Telemetry & Copilot:**
+  - Integrated Supabase Realtime channel subscription in [`app/(teacher)/teacher/page.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/app/(teacher)/teacher/page.tsx) subscribing to `postgres_changes` across `student_mastery`, `student_attempts`, and `classroom_students`.
+  - Added real-time auto-reloading of classroom roster, mastery distributions, and prerequisite bottleneck alerts whenever students submit diagnostics or practice attempts.
+  - Added minimal Apple-style pulsing "LIVE SYNC ACTIVE" telemetry badge with timestamp and connection status.
+  - Added live telemetry event toast banner showing instant notification of student submissions.
+  - Added one-click "Simulate Live Quiz" demo button for single-screen hackathon presentations.
+  - Enhanced [`lib/classroom/classroomActions.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/lib/classroom/classroomActions.ts) to populate real per-concept student records (`conceptRecords`).
+- **Student Learning Streak Engine ([`lib/gamification/streakEngine.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/lib/gamification/streakEngine.ts)):**
+  - Pure, deterministic streak calculator computing active practice days, longest historical streaks, and Monday-to-Sunday weekly activity matrices.
+  - Added [`components/gamification/StreakCard.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/gamification/StreakCard.tsx) with weekly checkmark indicators and motivational prompts.
+- **Concept Stars & Emotional Gamification ([`lib/gamification/badgeEngine.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/lib/gamification/badgeEngine.ts)):**
+  - 3-star rating system per concept node (0 to 3 stars, max 15 across the curriculum graph).
+  - Added [`components/gamification/StarRatingDisplay.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/gamification/StarRatingDisplay.tsx) rendered inline across the concept mastery table and overview stats.
+  - Added [`components/gamification/AchievementBadges.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/gamification/AchievementBadges.tsx) showcasing unlockable milestones:
+    - 🏅 **"Root Gap Healer"** — Awarded when foundational prerequisite bottlenecks (Fraction Basics / Factors) are cured with demonstrated &ge; 80% mastery!
+    - 🔥 **"3-Day Learning Streak"** — Awarded for 3+ consecutive active learning days.
+    - ⭐ **"Star Collector"** — Awarded for earning 9+ curriculum stars.
+    - 🎯 **"Diagnostic Pioneer"** — Awarded for completing the 15-question diagnostic baseline.
+    - 👑 **"Fraction Grandmaster"** — Awarded for mastering all 5 concept nodes (15/15 stars).
+    - 📚 **"Interactive Scholar"** — Awarded for completing interactive conceptual lessons.
+- **Unit & Integration Testing:**
+  - Added 10 new unit tests in [`tests/gamification.test.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/tests/gamification.test.ts) covering streak edge cases, consecutive day math, concept stars, Root Gap Healer badge unlock, and locked state checks.
+  - Total automated test suite expanded to **117 passing tests across 41 suites** with 0 failures (`npm test`).
 
 ### Added
 - **Expanded Question Bank (50 Questions):**

@@ -21,8 +21,10 @@ import { Footer } from "@/components/layout/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { MasteryBadge } from "@/components/curriculum/MasteryBadge";
+import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
+import { ParentReportButton } from "@/components/share/ParentReportButton";
 import { getStoredResult, clearStoredAssessment } from "@/lib/demo/state";
-import { DIAGNOSTIC_QUESTIONS } from "@/lib/curriculum/questions";
+import { ALL_QUESTIONS } from "@/lib/curriculum/questions";
 import { CONCEPTS } from "@/lib/curriculum/concepts";
 import { AssessmentResult, ConceptResult, QuestionReviewItem } from "@/types/assessment";
 import { ConceptId, QuestionOption } from "@/types/curriculum";
@@ -129,7 +131,18 @@ export default function AssessmentResultsPage() {
           </Link>
 
           {result && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <ParentReportButton
+                studentName="Student"
+                overallAccuracy={result.percentage}
+                stars={Math.round((result.percentage / 100) * 15)}
+                maxStars={15}
+                masteredCount={result.strongConcepts.length}
+                recommendedConcept={
+                  CONCEPTS[result.recommendedConceptId]?.shortTitle || result.recommendedConceptId
+                }
+              />
+
               <Button
                 variant="outline"
                 size="sm"
@@ -330,8 +343,14 @@ export default function AssessmentResultsPage() {
                     {Object.values(result.conceptBreakdown).map((item: ConceptResult) => (
                       <tr key={item.conceptId} className="hover:bg-zinc-50/50 transition-colors">
                         <td className="py-3.5 pr-4">
-                          <div className="font-semibold text-zinc-900">
-                            {item.conceptTitle}
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-semibold text-zinc-900">
+                              {item.conceptTitle}
+                            </span>
+                            <StarRatingDisplay
+                              stars={item.percentage >= 80 ? 3 : item.percentage >= 50 ? 2 : 1}
+                              size="sm"
+                            />
                           </div>
                           <div className="text-[11px] text-zinc-500 font-normal mt-0.5">
                             {CONCEPTS[item.conceptId]?.description}
@@ -383,7 +402,7 @@ export default function AssessmentResultsPage() {
               <div className="space-y-3">
                 {result.questionReviews.map((item: QuestionReviewItem, idx: number) => {
                   const isExpanded = expandedQuestionId === item.questionId;
-                  const questionMeta = DIAGNOSTIC_QUESTIONS.find((q) => q.id === item.questionId);
+                  const questionMeta = ALL_QUESTIONS.find((q) => q.id === item.questionId);
 
                   return (
                     <div

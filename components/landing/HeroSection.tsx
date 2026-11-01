@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Activity, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
 
 export const HeroSection: React.FC = () => {
   return (
@@ -72,6 +73,9 @@ export const HeroSection: React.FC = () => {
                 <span className="text-xs text-zinc-500 hidden sm:inline">
                   Student: Rohan Sharma
                 </span>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-[11px] font-semibold text-amber-900">
+                  🔥 3-Day Streak
+                </span>
                 <Badge variant="default" size="sm">
                   Active Session
                 </Badge>
@@ -101,6 +105,9 @@ export const HeroSection: React.FC = () => {
                         <Badge variant="teal" size="sm">Mastered</Badge>
                       </div>
                       <h4 className="text-sm font-semibold text-zinc-900 mt-1.5">Fraction Basics</h4>
+                      <div className="mt-1">
+                        <StarRatingDisplay stars={3} size="sm" />
+                      </div>
                     </div>
                     <div className="mt-4">
                       <div className="flex justify-between text-xs text-zinc-500 mb-1">
@@ -121,6 +128,9 @@ export const HeroSection: React.FC = () => {
                         <Badge variant="coral" size="sm">Root Gap</Badge>
                       </div>
                       <h4 className="text-sm font-semibold text-zinc-900 mt-1.5">Common Multiples</h4>
+                      <div className="mt-1">
+                        <StarRatingDisplay stars={1} size="sm" />
+                      </div>
                     </div>
                     <div className="mt-4">
                       <div className="flex justify-between text-xs text-zinc-500 mb-1">
@@ -141,6 +151,9 @@ export const HeroSection: React.FC = () => {
                         <Badge variant="amber" size="sm">Developing</Badge>
                       </div>
                       <h4 className="text-sm font-semibold text-zinc-900 mt-1.5">Equivalent Fractions</h4>
+                      <div className="mt-1">
+                        <StarRatingDisplay stars={2} size="sm" />
+                      </div>
                     </div>
                     <div className="mt-4">
                       <div className="flex justify-between text-xs text-zinc-500 mb-1">
@@ -161,6 +174,9 @@ export const HeroSection: React.FC = () => {
                         <Badge variant="coral" size="sm">Blocked</Badge>
                       </div>
                       <h4 className="text-sm font-semibold text-zinc-900 mt-1.5">Adding Fractions</h4>
+                      <div className="mt-1">
+                        <StarRatingDisplay stars={1} size="sm" />
+                      </div>
                     </div>
                     <div className="mt-4">
                       <div className="flex justify-between text-xs text-zinc-500 mb-1">

@@ -20,6 +20,8 @@ import { getStudentDetailForTeacher, StudentDetailPayload } from "@/lib/teacher/
 import { InterventionModal } from "@/components/teacher/InterventionModal";
 import { CONCEPTS } from "@/lib/curriculum/concepts";
 import { dismissTeacherInterventionAction } from "@/lib/teacher/interventionActions";
+import { ParentReportButton } from "@/components/share/ParentReportButton";
+import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
 
 interface StudentDetailPageProps {
   params: Promise<{ studentId: string }>;
@@ -116,43 +118,70 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
               </Button>
             </Link>
           </Card>
-        ) : data ? (
-          <div>
-            {/* Student Profile Header */}
-            <section className="p-6 sm:p-8 rounded-3xl border border-black/10 bg-neutral-50/60 shadow-xs mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[11px] font-semibold text-neutral-500 bg-white border border-black/10 px-2.5 py-0.5 rounded-full">
-                    Class {data.student.gradeLevel || 7} Mathematics
-                  </span>
-                  {data.student.classroomName && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-neutral-700 bg-neutral-200/60 px-2 py-0.5 rounded-md">
-                      <School className="w-3 h-3 text-neutral-500" />
-                      {data.student.classroomName}
+        ) : data ? (() => {
+          const masteredCount = Object.values(data.conceptMasteries).filter(
+            (m) => m.status === "mastered"
+          ).length;
+          const evaluatedRecords = Object.values(data.conceptMasteries).filter(
+            (m) => m.masteryScore !== null
+          );
+          const overallAccuracy =
+            evaluatedRecords.length > 0
+              ? Math.round(
+                  evaluatedRecords.reduce((acc, m) => acc + (m.masteryScore || 0), 0) /
+                    evaluatedRecords.length
+                )
+              : null;
+
+          return (
+            <div>
+              {/* Student Profile Header */}
+              <section className="p-6 sm:p-8 rounded-3xl border border-black/10 bg-neutral-50/60 shadow-xs mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[11px] font-semibold text-neutral-500 bg-white border border-black/10 px-2.5 py-0.5 rounded-full">
+                      Class {data.student.gradeLevel || 7} Mathematics
                     </span>
-                  )}
+                    {data.student.classroomName && (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-neutral-700 bg-neutral-200/60 px-2 py-0.5 rounded-md">
+                        <School className="w-3 h-3 text-neutral-500" />
+                        {data.student.classroomName}
+                      </span>
+                    )}
+                  </div>
+
+                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+                    {data.student.fullName}
+                  </h1>
+                  <p className="text-xs text-neutral-500 font-mono mt-0.5">
+                    {data.student.email}
+                    {data.student.schoolName && ` • ${data.student.schoolName}`}
+                  </p>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
-                  {data.student.fullName}
-                </h1>
-                <p className="text-xs text-neutral-500 font-mono mt-0.5">
-                  {data.student.email}
-                  {data.student.schoolName && ` • ${data.student.schoolName}`}
-                </p>
-              </div>
+                {/* Action: Open Intervention Override Modal & Share WhatsApp Report */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <ParentReportButton
+                    studentName={data.student.fullName}
+                    overallAccuracy={overallAccuracy}
+                    masteredCount={masteredCount}
+                    totalConcepts={5}
+                    recommendedConcept={
+                      data.activeIntervention?.conceptTitle ||
+                      CONCEPTS[data.recommendation.recommendedConceptId]?.shortTitle ||
+                      "Fraction Basics"
+                    }
+                  />
 
-              {/* Action: Open Intervention Override Modal */}
-              <div className="flex items-center gap-3">
-                <Button
-                  onClick={() => setIsInterventionModalOpen(true)}
-                  className="rounded-2xl bg-black text-white hover:bg-neutral-800 text-xs px-5 py-2.5 font-semibold flex items-center gap-1.5 shadow-xs"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Assign Pedagogical Override</span>
-                </Button>
-              </div>
-            </section>
+                  <Button
+                    onClick={() => setIsInterventionModalOpen(true)}
+                    className="rounded-2xl bg-black text-white hover:bg-neutral-800 text-xs px-5 py-2.5 font-semibold flex items-center gap-1.5 shadow-xs"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Assign Pedagogical Override</span>
+                  </Button>
+                </div>
+              </section>
 
             {/* Active Teacher Intervention Banner (if exists) */}
             {data.activeIntervention && (
@@ -255,7 +284,21 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
                           {c.order}
                         </span>
                         <div>
-                          <h4 className="text-xs font-bold text-neutral-900">{c.title}</h4>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h4 className="text-xs font-bold text-neutral-900">{c.title}</h4>
+                            <StarRatingDisplay
+                              stars={
+                                status === "mastered"
+                                  ? 3
+                                  : status === "partial"
+                                  ? 2
+                                  : status === "needs_revision"
+                                  ? 1
+                                  : 0
+                              }
+                              size="sm"
+                            />
+                          </div>
                           <p className="text-[11px] text-neutral-500 mt-0.5 max-w-xl">
                             {c.description}
                           </p>
@@ -389,7 +432,8 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
               }}
             />
           </div>
-        ) : null}
+        );
+      })() : null}
       </main>
 
       <Footer />

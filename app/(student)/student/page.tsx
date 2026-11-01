@@ -41,6 +41,7 @@ import { evaluateGamification } from "@/lib/gamification/badgeEngine";
 import { StreakCard } from "@/components/gamification/StreakCard";
 import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
 import { AchievementBadges } from "@/components/gamification/AchievementBadges";
+import { ParentReportButton } from "@/components/share/ParentReportButton";
 
 export default function StudentDashboardPage() {
   const isConfigured = isSupabaseConfigured();
@@ -364,7 +365,25 @@ export default function StudentDashboardPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            {hasMasteryData && (
+              <ParentReportButton
+                studentName={profile?.fullName || "Student"}
+                overallAccuracy={overallAccuracy}
+                stars={gamification.totalStars}
+                maxStars={gamification.maxStars}
+                streak={streakSummary.currentStreak}
+                masteredCount={masteredConcepts.length}
+                badgesCount={gamification.unlockedBadgeCount}
+                recommendedConcept={
+                  recommendation
+                    ? CONCEPTS[recommendation.recommendedConceptId]?.shortTitle ||
+                      recommendation.recommendedConceptId
+                    : "Fraction Basics"
+                }
+              />
+            )}
+
             <Link href="/student/assessment">
               <Button className="bg-black hover:bg-neutral-800 text-white rounded-xl text-xs font-medium px-4 py-2.5 flex items-center gap-2 shadow-sm">
                 <PlayCircle className="w-4 h-4" />

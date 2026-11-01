@@ -110,7 +110,7 @@ export const Header: React.FC = () => {
           {/* Desktop Navigation Links */}
           <nav
             aria-label="Main Navigation"
-            className="hidden md:flex items-center gap-8 text-[13px] font-medium text-zinc-600"
+            className="hidden md:flex items-center gap-7 text-[13px] font-medium text-zinc-600"
           >
             <Link
               href="/#features"
@@ -125,16 +125,17 @@ export const Header: React.FC = () => {
               How It Works
             </Link>
             <Link
-              href="/#learning-paths"
+              href="/student"
               className="hover:text-black transition-colors focus-visible:text-black"
             >
-              Learning Paths
+              Student Portal
             </Link>
             <Link
-              href="/#for-teachers"
-              className="hover:text-black transition-colors focus-visible:text-black"
+              href="/teacher"
+              className="hover:text-black transition-colors focus-visible:text-black inline-flex items-center gap-1.5"
             >
-              For Teachers
+              <span>Teacher Copilot</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             </Link>
           </nav>
 
@@ -229,18 +230,19 @@ export const Header: React.FC = () => {
               How It Works
             </Link>
             <Link
-              href="/#learning-paths"
-              className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors"
+              href="/student"
+              className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors font-semibold text-neutral-900"
               onClick={closeMenu}
             >
-              Learning Paths
+              Student Portal
             </Link>
             <Link
-              href="/#for-teachers"
-              className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors"
+              href="/teacher"
+              className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors font-semibold text-neutral-900 flex items-center justify-between"
               onClick={closeMenu}
             >
-              For Teachers
+              <span>Teacher Copilot</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             </Link>
 
             <div className="pt-3 mt-1 border-t border-black/[0.06] flex flex-col gap-2">

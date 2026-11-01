@@ -25,6 +25,13 @@ All notable changes to the ShikshaIQ codebase are documented in this file.
     - 🎯 **"Diagnostic Pioneer"** — Awarded for completing the 15-question diagnostic baseline.
     - 👑 **"Fraction Grandmaster"** — Awarded for mastering all 5 concept nodes (15/15 stars).
     - 📚 **"Interactive Scholar"** — Awarded for completing interactive conceptual lessons.
+- **Parent WhatsApp Progress Report ([`components/share/ParentReportButton.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/share/ParentReportButton.tsx)):**
+  - Instant one-click WhatsApp message generator sharing verified accuracy, curriculum stars, learning streak, and current remediation focus with parents.
+  - Integrated across Student Dashboard, Assessment Results, and Teacher Student Detail views.
+- **Cross-App Apple Minimal Aesthetic Enhancements:**
+  - Header: added direct quick-switch navigation between Student Portal and live Teacher Copilot with active status pulses.
+  - Landing Hero: visual synchronization with live app featuring 3-star concept mastery ratings and streak counter.
+  - Results & Practice: star rating indicators integrated inline across concept breakdown tables and completion summary cards.
 - **Unit & Integration Testing:**
   - Added 10 new unit tests in [`tests/gamification.test.ts`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/tests/gamification.test.ts) covering streak edge cases, consecutive day math, concept stars, Root Gap Healer badge unlock, and locked state checks.
   - Total automated test suite expanded to **117 passing tests across 41 suites** with 0 failures (`npm test`).

@@ -19,6 +19,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { MasteryBadge } from "@/components/curriculum/MasteryBadge";
+import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
 import { CONCEPTS } from "@/lib/curriculum/concepts";
 import { ALL_QUESTIONS } from "@/lib/curriculum/questions";
 import { ConceptId, PublicQuestion } from "@/types/curriculum";
@@ -660,8 +661,20 @@ export default function PracticeConceptPage({ params }: PracticePageProps) {
 
                 <div className="p-4 rounded-2xl bg-neutral-50 border border-black/5 text-center col-span-2 sm:col-span-1">
                   <div className="text-[10px] font-mono text-neutral-400 uppercase">Mastery State</div>
-                  <div className="pt-1 flex justify-center">
+                  <div className="pt-1 flex flex-col items-center gap-1.5 justify-center">
                     <MasteryBadge status={updatedMastery?.status || "partial"} />
+                    <StarRatingDisplay
+                      stars={
+                        totalAnswered > 0
+                          ? correctCount / totalAnswered >= 0.8
+                            ? 3
+                            : correctCount / totalAnswered >= 0.5
+                            ? 2
+                            : 1
+                          : 0
+                      }
+                      size="sm"
+                    />
                   </div>
                 </div>
               </div>

@@ -316,7 +316,7 @@ export default function PracticeConceptPage({ params }: PracticePageProps) {
       <Header />
       <OfflineStatusBar userId={studentUserId} />
 
-      <main className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12 space-y-8">
         {/* Top Navigation */}
         <div className="flex items-center justify-between">
           <Link
@@ -396,7 +396,7 @@ export default function PracticeConceptPage({ params }: PracticePageProps) {
               </div>
 
               {/* Options List */}
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 {currentQuestion.options.map((option) => {
                   const isSelected = selectedOptionId === option.id;
                   const isCorrect = currentFeedback?.correctOptionId === option.id;

@@ -272,7 +272,7 @@ export default function TeacherCopilotPage() {
     <div className="min-h-screen flex flex-col bg-[#ffffff] text-neutral-900 font-sans">
       <Header />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12">
         {/* Missing Supabase Env Alert */}
         {!isConfigured && (
           <div className="mb-8 p-4 rounded-2xl bg-amber-50 border border-amber-200/80 text-xs text-amber-900 flex items-start gap-3">

@@ -225,7 +225,7 @@ export default function DiagnosticAssessmentPage() {
     <div className="min-h-screen flex flex-col bg-[#fbfbfd] text-zinc-900 font-sans">
       <Header />
 
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12">
         {/* Top Header Navigation */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/[0.06]">
           <Link
@@ -361,7 +361,7 @@ export default function DiagnosticAssessmentPage() {
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
               {questions.map((q, idx) => {
                 const answerId = answers[q.id];
                 const isAnswered = Boolean(answerId);
@@ -466,7 +466,7 @@ export default function DiagnosticAssessmentPage() {
             </div>
 
             {/* Options List */}
-            <fieldset className="space-y-2.5" aria-label="Answer options">
+            <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-3" aria-label="Answer options">
               <legend className="sr-only">Select one option</legend>
               {currentQuestion.options.map((option) => {
                 const isSelected = answers[currentQuestion.id] === option.id;

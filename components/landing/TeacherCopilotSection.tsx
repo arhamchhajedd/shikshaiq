@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 export const TeacherCopilotSection: React.FC = () => {
   return (
     <section id="for-teachers" className="py-20 lg:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <SectionHeading
           badge="Educator Intelligence"
           badgeVariant="default"

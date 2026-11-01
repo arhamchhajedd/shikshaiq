@@ -76,7 +76,7 @@ export function OfflineStatusBar({ userId, onSyncComplete }: OfflineStatusBarPro
       aria-live="polite"
       className="w-full bg-neutral-50/90 border-b border-black/5 px-4 py-2.5 backdrop-blur-sm transition-all"
     >
-      <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2.5">
           {!isOnline ? (
             <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/60 font-medium">

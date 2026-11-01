@@ -119,7 +119,7 @@ export default function AssessmentResultsPage() {
     <div className="min-h-screen flex flex-col bg-[#fbfbfd] text-zinc-900 font-sans">
       <Header />
 
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/[0.06]">
           <Link

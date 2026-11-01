@@ -287,7 +287,7 @@ export default function StudentDashboardPage() {
         }}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center justify-between">
           <Link

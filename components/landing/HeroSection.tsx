@@ -8,7 +8,7 @@ import { StarRatingDisplay } from "@/components/gamification/StarRatingDisplay";
 export const HeroSection: React.FC = () => {
   return (
     <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-[#fbfbfd]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
         <div className="text-center max-w-3xl mx-auto">
           {/* Tagline / Sub-badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-black/[0.08] text-xs font-medium text-zinc-700 mb-6 shadow-xs">
@@ -57,7 +57,7 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* Apple-style Minimal Product Preview */}
-        <div className="mt-14 max-w-4xl mx-auto">
+        <div className="mt-14 w-full mx-auto">
           <Card className="p-0 border-black/[0.08] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.06)] rounded-3xl overflow-hidden ring-1 ring-black/[0.04]">
             {/* Window Topbar */}
             <div className="px-5 py-3.5 bg-zinc-50/80 border-b border-black/[0.06] flex items-center justify-between">

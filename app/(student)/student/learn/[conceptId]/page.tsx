@@ -158,7 +158,7 @@ export default function LearnConceptPage({ params }: LearnPageProps) {
       <Header />
       <OfflineStatusBar />
 
-      <main className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 sm:py-12 space-y-8">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <Link
@@ -273,7 +273,7 @@ export default function LearnConceptPage({ params }: LearnPageProps) {
             4. Step-by-Step Worked Examples
           </h2>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {lesson.workedExamples.map((ex, exIdx) => (
               <Card key={ex.id} className="p-6 border border-black/5 rounded-3xl bg-white shadow-xs space-y-4">
                 <div className="flex items-center gap-2">

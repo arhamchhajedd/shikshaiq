@@ -50,7 +50,7 @@ export const LearningPathsSection: React.FC = () => {
 
   return (
     <section id="learning-paths" className="py-20 lg:py-28 bg-[#f5f5f7] border-y border-black/[0.05]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <SectionHeading
           badge="Three Learning Paths"
           badgeVariant="default"

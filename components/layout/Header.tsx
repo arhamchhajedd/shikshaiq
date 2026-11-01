@@ -86,7 +86,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/[0.06] bg-white/80 backdrop-blur-md transition-all font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="flex h-16 items-center justify-between">
           {/* Brand Logo & Wordmark */}
           <Link

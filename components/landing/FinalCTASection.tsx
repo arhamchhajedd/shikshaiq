@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 export const FinalCTASection: React.FC = () => {
   return (
     <section className="py-20 lg:py-28 bg-white border-t border-black/[0.06] relative overflow-hidden">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-black/[0.06] text-xs font-medium text-zinc-800 mb-6 shadow-xs">
           <span className="h-1.5 w-1.5 rounded-full bg-black" />
           <span>Experience the Adaptive MVP</span>

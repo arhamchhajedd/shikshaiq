@@ -113,22 +113,16 @@ export const Header: React.FC = () => {
             className="hidden md:flex items-center gap-7 text-[13px] font-medium text-zinc-600"
           >
             <Link
-              href="/curriculum"
+              href="/#features"
               className="hover:text-black transition-colors focus-visible:text-black"
             >
-              Curriculum
+              Features
             </Link>
             <Link
-              href="/faq"
+              href="/#how-it-works"
               className="hover:text-black transition-colors focus-visible:text-black"
             >
-              FAQ
-            </Link>
-            <Link
-              href="/about"
-              className="hover:text-black transition-colors focus-visible:text-black"
-            >
-              About
+              How It Works
             </Link>
             <Link
               href="/student"
@@ -222,25 +216,18 @@ export const Header: React.FC = () => {
         <div className="md:hidden border-b border-black/[0.06] bg-white/95 backdrop-blur-xl px-5 pt-3 pb-6 transition-all">
           <nav className="flex flex-col gap-2.5 text-sm font-medium text-zinc-800">
             <Link
-              href="/curriculum"
+              href="/#features"
               className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors"
               onClick={closeMenu}
             >
-              Curriculum Syllabus
+              Features
             </Link>
             <Link
-              href="/faq"
+              href="/#how-it-works"
               className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors"
               onClick={closeMenu}
             >
-              FAQ & Knowledge Base
-            </Link>
-            <Link
-              href="/about"
-              className="px-3 py-2 rounded-lg hover:bg-black/[0.03] transition-colors"
-              onClick={closeMenu}
-            >
-              About ShikshaIQ
+              How It Works
             </Link>
             <Link
               href="/student"

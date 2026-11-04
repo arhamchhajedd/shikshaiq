@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test tests/**/*.test.ts"
+    "test": "tsx --test tests/**/*.test.ts",
+    "record:demo": "node scripts/record_platform_demo.js && python3 scripts/assemble_demo_video.py",
+    "generate:pdf": "node scripts/generate_master_architecture_workflow_pdf.js",
+    "seed:real-data": "node scripts/seed_production_real_data.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -21,12 +24,14 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "playwright": "^1.64.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"

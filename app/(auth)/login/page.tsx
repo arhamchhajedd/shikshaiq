@@ -227,8 +227,48 @@ function LoginForm() {
             </Button>
           </form>
 
+          {/* Quick Credential Fill for Judges & Evaluators */}
+          <div className="pt-4 border-t border-black/[0.06] space-y-2.5">
+            <div className="flex items-center justify-between text-[11px] text-zinc-500">
+              <span className="font-semibold text-zinc-700">Live Evaluator Credentials:</span>
+              <span className="text-[10px] text-zinc-400 font-mono">1-Click Fill</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("teacher@shikshaiq.edu.in");
+                  setPassword("Password123!");
+                }}
+                className="px-2 py-1.5 rounded-xl border border-black/10 hover:border-black/30 bg-zinc-50 hover:bg-white text-[11px] font-medium text-zinc-800 transition-all text-center"
+              >
+                👩‍🏫 Teacher
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("rohan@shikshaiq.edu.in");
+                  setPassword("Password123!");
+                }}
+                className="px-2 py-1.5 rounded-xl border border-black/10 hover:border-black/30 bg-zinc-50 hover:bg-white text-[11px] font-medium text-zinc-800 transition-all text-center"
+              >
+                🎓 Student
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("shiksha_admin@shikshaiq.edu.in");
+                  setPassword("AdminPassword2026!");
+                }}
+                className="px-2 py-1.5 rounded-xl border border-black/10 hover:border-black/30 bg-zinc-50 hover:bg-white text-[11px] font-medium text-zinc-800 transition-all text-center"
+              >
+                🛡️ Admin
+              </button>
+            </div>
+          </div>
+
           {/* Role Navigation Assistance */}
-          <div className="pt-4 border-t border-black/[0.06] space-y-3">
+          <div className="pt-2 border-t border-black/[0.06] space-y-2">
             <div className="flex items-center justify-between text-[11px] text-zinc-500">
               <span className="font-semibold text-zinc-700">Supported Roles:</span>
               <div className="flex items-center gap-3">

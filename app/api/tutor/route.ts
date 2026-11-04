@@ -61,6 +61,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<TutorApiR
 
     // 2. Authentication & Authorization Check
     let userId = "demo_student";
+    let isDemoGuest = false;
+
     if (isSupabaseConfigured()) {
       const supabase = await createServerSupabaseClient();
       const {
@@ -69,34 +71,30 @@ export async function POST(request: NextRequest): Promise<NextResponse<TutorApiR
       } = await supabase.auth.getUser();
 
       if (authError || !user) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: "Authentication required to access ShikshaIQ AI Tutor.",
-            errorCode: "UNAUTHORIZED",
-          },
-          { status: 401 }
-        );
-      }
+        // Allow guest / exploratory demo access rate-limited by IP
+        const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "guest_client";
+        userId = `demo_${clientIp}`;
+        isDemoGuest = true;
+      } else {
+        userId = user.id;
 
-      userId = user.id;
+        // Verify user account status
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role, account_status")
+          .eq("id", user.id)
+          .single();
 
-      // Verify user account status
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role, account_status")
-        .eq("id", user.id)
-        .single();
-
-      if (profile && profile.account_status === "suspended") {
-        return NextResponse.json(
-          {
-            success: false,
-            error: "Your account is suspended. Please contact platform administrators.",
-            errorCode: "UNAUTHORIZED",
-          },
-          { status: 403 }
-        );
+        if (profile && profile.account_status === "suspended") {
+          return NextResponse.json(
+            {
+              success: false,
+              error: "Your account is suspended. Please contact platform administrators.",
+              errorCode: "UNAUTHORIZED",
+            },
+            { status: 403 }
+          );
+        }
       }
     }
 
@@ -163,8 +161,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<TutorApiR
       );
     }
 
-    // 7. Save user message to persistent storage
-    if (conversationId) {
+    // 7. Save user message to persistent storage (if not ephemeral guest)
+    if (conversationId && !isDemoGuest && !conversationId.startsWith("ephemeral_")) {
       await saveTutorMessage(conversationId, "user", message, language as TutorLanguage);
     }
 
@@ -184,8 +182,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<TutorApiR
       language: language as TutorLanguage,
     };
 
-    // 9. Save assistant message to persistent storage
-    if (conversationId) {
+    // 9. Save assistant message to persistent storage (if not ephemeral guest)
+    if (conversationId && !isDemoGuest && !conversationId.startsWith("ephemeral_")) {
       await saveTutorMessage(conversationId, "assistant", assistantMessage.content, language as TutorLanguage);
     }
 

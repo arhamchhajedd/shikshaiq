@@ -10,7 +10,6 @@ import {
   School,
   Sparkles,
   TrendingUp,
-  Zap,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -158,57 +157,6 @@ export default function TeacherCopilotPage() {
     };
   }, [isConfigured, selectedClassroomId]);
 
-  const handleSimulateLiveSubmission = () => {
-    if (students.length === 0) {
-      alert("No students currently enrolled in this classroom to simulate.");
-      return;
-    }
-
-    const conceptsList = Object.values(CONCEPTS);
-    const targetStudent = students[0];
-    const newMasteredCount = Math.min(5, targetStudent.masteredConceptsCount + 1);
-    const newNeedsRevision = Math.max(0, targetStudent.needsRevisionCount - 1);
-
-    const updatedRecords: Record<string, ConceptMasteryRecord> = {
-      ...(targetStudent.conceptRecords || {}),
-    };
-
-    // Find next unmastered concept to upgrade
-    const nextConcept = conceptsList.find(
-      (c) => !updatedRecords[c.id] || updatedRecords[c.id].status !== "mastered"
-    );
-
-    if (nextConcept) {
-      updatedRecords[nextConcept.id] = {
-        conceptId: nextConcept.id,
-        masteryScore: 92,
-        status: "mastered",
-        validEvidenceCount: 3,
-        lastEvaluatedAt: new Date().toISOString(),
-      };
-    }
-
-    const updatedStudents: ClassroomStudent[] = students.map((s, idx) => {
-      if (idx === 0) {
-        return {
-          ...s,
-          masteredConceptsCount: newMasteredCount,
-          needsRevisionCount: newNeedsRevision,
-          latestActivityAt: new Date().toISOString(),
-          conceptRecords: updatedRecords,
-        };
-      }
-      return s;
-    });
-
-    setStudents(updatedStudents);
-    setLastLiveEventAt(new Date());
-    setLiveEventNotice(
-      `Live Demo Event: ${targetStudent.studentName} just submitted a diagnostic quiz — mastery matrix updated in real time!`
-    );
-    setTimeout(() => setLiveEventNotice(null), 5000);
-  };
-
   const handleClassroomCreated = (newClass: Classroom) => {
     const withCount: ClassroomWithStudentCount = {
       ...newClass,
@@ -341,18 +289,6 @@ export default function TeacherCopilotPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
-            {/* Live Simulation Demo Button for Hackathon Judges */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleSimulateLiveSubmission}
-              className="text-xs border-emerald-300 bg-emerald-50/60 text-emerald-900 hover:bg-emerald-100 rounded-xl px-3.5 flex items-center gap-1.5 shadow-2xs"
-              title="Simulate live student assessment submission to test real-time UI telemetry"
-            >
-              <Zap className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600/30" />
-              <span>Simulate Live Quiz</span>
-            </Button>
-
             <Link href="/teacher/students">
               <Button
                 variant="outline"

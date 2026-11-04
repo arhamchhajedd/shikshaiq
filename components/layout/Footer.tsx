@@ -52,20 +52,29 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#how-it-works"
-                  className="hover:text-black transition-colors"
+                <Link
+                  href="/curriculum"
+                  className="hover:text-black transition-colors inline-flex items-center gap-1"
                 >
-                  Adaptive Concept Graph
-                </a>
+                  Curriculum Topology
+                  <ArrowUpRight className="h-3 w-3 opacity-50" />
+                </Link>
               </li>
               <li>
-                <a
-                  href="#learning-paths"
+                <Link
+                  href="/faq"
                   className="hover:text-black transition-colors"
                 >
-                  Personalized Pathways
-                </a>
+                  Frequently Asked Questions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="hover:text-black transition-colors"
+                >
+                  About & Pedagogical Mission
+                </Link>
               </li>
             </ul>
           </div>

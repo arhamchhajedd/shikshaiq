@@ -10,13 +10,11 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
-  User,
+  Sparkles,
   GraduationCap,
+  User,
   Shield,
 } from "lucide-react";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { signInUser } from "@/lib/auth/actions";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -54,7 +52,6 @@ function LoginForm() {
       if (!result.success) {
         setErrorMessage(result.error);
       } else {
-        // Enforce safe relative redirect path, prevent open redirects
         const isSafeRedirect =
           redirectTarget &&
           redirectTarget.startsWith("/") &&
@@ -67,29 +64,155 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fbfbfd] text-zinc-900 font-sans">
-      <Header />
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-white text-zinc-950 font-sans selection:bg-black selection:text-white">
+      {/* Left Brand Panel (Matches Winden / Apple Style) */}
+      <div className="lg:w-1/2 min-h-[420px] lg:min-h-screen bg-[#f8f9fb] border-b lg:border-b-0 lg:border-r border-black/[0.06] p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden">
+        {/* Subtle decorative vector curves */}
+        <div className="absolute inset-0 pointer-events-none opacity-40">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 600 800"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M-50 150 C 150 120, 250 350, 650 200"
+              stroke="#000000"
+              strokeWidth="1"
+              strokeDasharray="4 6"
+              className="opacity-10"
+            />
+            <path
+              d="M-100 400 C 200 300, 300 650, 700 500"
+              stroke="#000000"
+              strokeWidth="1.2"
+              className="opacity-10"
+            />
+            <path
+              d="M50 750 C 350 600, 450 780, 650 680"
+              stroke="#000000"
+              strokeWidth="0.8"
+              className="opacity-10"
+            />
+          </svg>
+        </div>
 
-      <main className="flex-1 max-w-md w-full mx-auto px-4 py-12 sm:py-16 flex flex-col justify-center">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black transition-colors mb-6 self-start"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>Back to Home</span>
-        </Link>
-
-        <Card className="bg-white border-black/[0.08] p-7 sm:p-9 space-y-6 shadow-[0_12px_40px_rgba(0,0,0,0.04)] rounded-3xl">
-          {/* Header */}
-          <div className="text-center space-y-2">
-            <div className="inline-flex h-11 w-11 rounded-2xl bg-black text-white items-center justify-center font-bold text-base shadow-xs mx-auto">
+        {/* Top: Logo & Back Link */}
+        <div className="relative z-10 flex items-center justify-between">
+          <Link
+            href="/"
+            className="group flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-2xl"
+          >
+            <div className="h-12 w-12 rounded-2xl bg-black text-white flex items-center justify-center font-bold text-lg shadow-[0_8px_20px_rgba(0,0,0,0.12)] group-hover:scale-105 transition-transform">
               IQ
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-950">
-              Sign In to ShikshaIQ
-            </h1>
-            <p className="text-xs text-zinc-500 font-normal">
-              Enter your credentials to access your Student, Teacher, or Admin portal.
+            <div className="flex flex-col">
+              <span className="font-bold text-base tracking-tight text-zinc-950">
+                ShikshaIQ
+              </span>
+              <span className="text-[11px] text-zinc-500 font-medium">
+                NCERT Class 7 Mathematics
+              </span>
+            </div>
+          </Link>
+
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-black font-medium transition-colors"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span>Back to site</span>
+          </Link>
+        </div>
+
+        {/* Center: Hero Heading */}
+        <div className="relative z-10 my-10 lg:my-auto max-w-md space-y-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-950 leading-[1.08]">
+            Sign in to <br />
+            <span className="text-zinc-500 font-normal">ShikshaIQ.</span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
+            One classroom. Different learners. Access your personalized Class 7 Fractions diagnostics, mastery matrix, or teacher copilot.
+          </p>
+
+          {/* 1-Click Fast Fill Pills for Evaluators */}
+          <div className="pt-4 space-y-2.5">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-800">
+              <Sparkles className="h-3.5 w-3.5 text-black" />
+              <span>1-Click Evaluator Logins:</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("teacher@shikshaiq.edu.in");
+                  setPassword("Password123!");
+                }}
+                className="px-3 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-zinc-100 text-zinc-800 border border-black/10 shadow-xs transition-all active:scale-95 flex items-center gap-1.5"
+              >
+                <GraduationCap className="h-3.5 w-3.5 text-amber-600" />
+                <span>Teacher</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("rohan@shikshaiq.edu.in");
+                  setPassword("Password123!");
+                }}
+                className="px-3 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-zinc-100 text-zinc-800 border border-black/10 shadow-xs transition-all active:scale-95 flex items-center gap-1.5"
+              >
+                <User className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Student (Rohan)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("shiksha_admin@shikshaiq.edu.in");
+                  setPassword("AdminPassword2026!");
+                }}
+                className="px-3 py-1.5 rounded-full text-xs font-medium bg-white hover:bg-zinc-100 text-zinc-800 border border-black/10 shadow-xs transition-all active:scale-95 flex items-center gap-1.5"
+              >
+                <Shield className="h-3.5 w-3.5 text-purple-600" />
+                <span>Admin</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Proof / Testimonial Card */}
+        <div className="relative z-10 max-w-md bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-black/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/[0.06]">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full bg-zinc-900 text-white flex items-center justify-center font-bold text-xs">
+                RS
+              </div>
+              <div>
+                <h2 className="text-xs font-bold text-zinc-950">Dr. Radhika Sharma</h2>
+                <p className="text-[11px] text-zinc-500">Class 7 Mathematics Educator</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-600">
+              NCERT / CBSE
+            </span>
+          </div>
+          <p className="text-xs text-zinc-600 leading-relaxed italic">
+            &ldquo;ShikshaIQ uncovered that 18 of my students struggled with Adding Fractions simply because of an unaddressed gap in Common Multiples (LCM). Remediating that first changed everything.&rdquo;
+          </p>
+        </div>
+      </div>
+
+      {/* Right Form Panel (Clean, Centered, Full Page) */}
+      <div className="lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:p-20 bg-white">
+        <div className="w-full max-w-md space-y-7">
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950">
+              Welcome back
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-500">
+              Enter your credentials to access your dashboard.
             </p>
           </div>
 
@@ -107,11 +230,11 @@ function LoginForm() {
           )}
 
           {isResetSent && (
-            <div className="p-4 rounded-2xl bg-neutral-50 border border-black/10 text-xs text-neutral-800 flex items-start gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-neutral-700 shrink-0 mt-0.5" />
+            <div className="p-4 rounded-2xl bg-zinc-50 border border-black/10 text-xs text-zinc-800 flex items-start gap-2.5">
+              <CheckCircle2 className="h-4 w-4 text-zinc-700 shrink-0 mt-0.5" />
               <div>
                 <span className="font-semibold block">Reset Link Dispatched</span>
-                <p className="text-neutral-600 text-[11px] mt-0.5">
+                <p className="text-zinc-600 text-[11px] mt-0.5">
                   Check your email inbox for password recovery instructions.
                 </p>
               </div>
@@ -130,7 +253,7 @@ function LoginForm() {
             </div>
           )}
 
-          {/* Missing Env Notice (Visible only if Supabase keys not set yet) */}
+          {/* Configuration Notice if Supabase not configured */}
           {!isConfigured && (
             <div className="p-4 rounded-2xl bg-zinc-50 border border-black/[0.08] text-xs text-zinc-700 space-y-2">
               <div className="flex items-center gap-2 font-semibold text-zinc-900">
@@ -138,14 +261,7 @@ function LoginForm() {
                 <span>Supabase Configuration Ready</span>
               </div>
               <p className="text-[11px] text-zinc-600 leading-relaxed font-normal">
-                To activate live authentication, add your project credentials to <code className="px-1.5 py-0.5 rounded bg-zinc-200 font-mono text-[10px]">.env.local</code>:
-              </p>
-              <div className="p-2.5 rounded-xl bg-zinc-900 text-zinc-100 font-mono text-[10px] overflow-x-auto select-all">
-                NEXT_PUBLIC_SUPABASE_URL=https://your-id.supabase.co<br />
-                NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
-              </div>
-              <p className="text-[10px] text-zinc-500">
-                See <Link href="/supabase/migrations" className="underline font-medium text-zinc-800">supabase/migrations/README.md</Link> for SQL setup.
+                To activate live authentication, add your project credentials to <code className="px-1.5 py-0.5 rounded bg-zinc-200 font-mono text-[10px]">.env.local</code>.
               </p>
             </div>
           )}
@@ -164,8 +280,8 @@ function LoginForm() {
             </div>
           )}
 
-          {/* Login Form */}
-          <form onSubmit={handleSignIn} className="space-y-4">
+          {/* Sign In Form */}
+          <form onSubmit={handleSignIn} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-xs font-semibold text-zinc-800 mb-1.5">
                 Email Address
@@ -178,7 +294,7 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@school.edu.in"
                 autoComplete="email"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 border border-black/[0.08] text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                className="w-full px-4 py-3 rounded-2xl bg-white border border-black/10 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-all"
               />
             </div>
 
@@ -189,7 +305,7 @@ function LoginForm() {
                 </label>
                 <Link
                   href="/auth/forgot-password"
-                  className="text-[11px] text-zinc-500 hover:text-black font-medium transition-colors"
+                  className="text-xs text-zinc-500 hover:text-black font-medium transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -202,16 +318,16 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 autoComplete="current-password"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 border border-black/[0.08] text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                className="w-full px-4 py-3 rounded-2xl bg-white border border-black/10 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-all"
               />
             </div>
 
             <Button
               variant="primary"
-              size="md"
+              size="lg"
               type="submit"
               disabled={isPending}
-              className="w-full justify-center"
+              className="w-full justify-center h-12 text-sm font-semibold rounded-2xl mt-2"
             >
               {isPending ? (
                 <>
@@ -221,84 +337,24 @@ function LoginForm() {
               ) : (
                 <>
                   <span>Sign In</span>
-                  <ArrowRight className="h-4 w-4 ml-1" />
+                  <ArrowRight className="h-4 w-4 ml-1.5" />
                 </>
               )}
             </Button>
           </form>
 
-          {/* Quick Credential Fill for Judges & Evaluators */}
-          <div className="pt-4 border-t border-black/[0.06] space-y-2.5">
-            <div className="flex items-center justify-between text-[11px] text-zinc-500">
-              <span className="font-semibold text-zinc-700">Live Evaluator Credentials:</span>
-              <span className="text-[10px] text-zinc-400 font-mono">1-Click Fill</span>
-            </div>
-            <div className="grid grid-cols-3 gap-1.5">
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail("teacher@shikshaiq.edu.in");
-                  setPassword("Password123!");
-                }}
-                className="px-2 py-1.5 rounded-xl border border-black/10 hover:border-black/30 bg-zinc-50 hover:bg-white text-[11px] font-medium text-zinc-800 transition-all text-center"
-              >
-                👩‍🏫 Teacher
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail("rohan@shikshaiq.edu.in");
-                  setPassword("Password123!");
-                }}
-                className="px-2 py-1.5 rounded-xl border border-black/10 hover:border-black/30 bg-zinc-50 hover:bg-white text-[11px] font-medium text-zinc-800 transition-all text-center"
-              >
-                🎓 Student
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail("shiksha_admin@shikshaiq.edu.in");
-                  setPassword("AdminPassword2026!");
-                }}
-                className="px-2 py-1.5 rounded-xl border border-black/10 hover:border-black/30 bg-zinc-50 hover:bg-white text-[11px] font-medium text-zinc-800 transition-all text-center"
-              >
-                🛡️ Admin
-              </button>
-            </div>
-          </div>
-
-          {/* Role Navigation Assistance */}
-          <div className="pt-2 border-t border-black/[0.06] space-y-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-500">
-              <span className="font-semibold text-zinc-700">Supported Roles:</span>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center gap-1">
-                  <User className="h-3 w-3 text-zinc-400" /> Student
-                </span>
-                <span className="inline-flex items-center gap-1">
-                  <GraduationCap className="h-3 w-3 text-zinc-400" /> Teacher
-                </span>
-                <span className="inline-flex items-center gap-1">
-                  <Shield className="h-3 w-3 text-zinc-400" /> Admin
-                </span>
-              </div>
-            </div>
-
-            <p className="text-[11px] text-zinc-500 text-center">
-              Your role determines your designated dashboard automatically upon login.
-            </p>
-          </div>
-
-          <div className="text-center text-xs text-zinc-500 pt-2 border-t border-black/[0.06]">
+          {/* Bottom Switcher */}
+          <div className="pt-6 border-t border-black/[0.06] text-center text-xs text-zinc-500">
             Don&apos;t have an account yet?{" "}
-            <Link href="/signup" className="text-black font-semibold hover:underline">
+            <Link
+              href="/signup"
+              className="text-black font-semibold hover:underline underline-offset-4"
+            >
               Create an account
             </Link>
           </div>
-        </Card>
-      </main>
-
-      <Footer />
+        </div>
+      </div>
     </div>
   );
 }
@@ -307,7 +363,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#fbfbfd]">
+        <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="h-6 w-6 border-2 border-black border-t-transparent rounded-full animate-spin" />
         </div>
       }

@@ -354,3 +354,39 @@ This document tracks the official phases, milestones, deliverables, verification
   - Application ready for controlled production rollout.
 
 
+
+---
+
+### Phase 10: Deep Technical SEO, AEO & GEO Infrastructure
+
+- [x] **Canonical Origin & Route Inventory:**
+  - Implemented `lib/seo/site.ts` with centralized canonical origin (`https://shikshaiq.vercel.app`), dynamic `NEXT_PUBLIC_SITE_URL` support, and brand facts.
+  - Implemented `lib/seo/routes.ts` listing all indexable public paths (`PUBLIC_ROUTES`) and private route prefixes.
+- [x] **Dynamic Sitemap & Search Directives:**
+  - Created `app/sitemap.ts` dynamically generating compliant XML sitemap entries for all 11 public URLs with reliable `lastModified` date.
+  - Created `app/robots.ts` allowing indexing across all public marketing and curriculum routes, disallowing `/api/`, specifying sitemap and canonical host.
+- [x] **Structured Data & Safe JSON-LD Serialization:**
+  - Implemented `serializeJsonLd()` in `lib/seo/structuredData.ts` with HTML character entity escaping (`<`, `>`, `&`, `\u2028`, `\u2029`) preventing `<script>` breakout attacks.
+  - Implemented schema builders for `Organization`, `WebSite`, `WebApplication`, `BreadcrumbList`, `FAQPage`, `Course`, and `LearningResource`.
+  - Created `components/seo/JsonLd.tsx` rendering structured data via native Next.js recommended `<script type="application/ld+json">`.
+- [x] **Social Sharing & OpenGraph Media Generation:**
+  - Implemented dynamic monochrome social card generators in `components/seo/OgImage.tsx`, `app/opengraph-image.tsx`, and `app/twitter-image.tsx` using `ImageResponse` (1200x630 PNG).
+  - Created `app/apple-icon.tsx` (180x180 PNG) and `app/icon.svg`.
+  - Updated `app/manifest.ts` with icons, language, and Apple Web App capabilities.
+- [x] **Public Content Expansion for High Rankings & Discovery:**
+  - Built `/curriculum` exploring the NCERT Class 7 Fractions DAG topology with `Course` & `BreadcrumbList` JSON-LD.
+  - Built `/curriculum/[conceptId]` statically prerendered for all 5 concepts with visual fraction models, worked examples, and `LearningResource` JSON-LD.
+  - Built `/faq` containing 14 verified, factual NCERT Fractions Q&As organized into 5 categories with `FAQPage` JSON-LD.
+  - Built `/about` detailing the pedagogical dilemma in Indian classrooms, strict deterministic grading vs. AI tutoring separation, and DPDP Act minor privacy.
+  - Added home page FAQ preview section (`FaqPreviewSection`) and `WebApplication` JSON-LD on `/`.
+- [x] **AEO & GEO (AI Answer Engines & Generative Search):**
+  - Implemented `/llms.txt` (`lib/seo/llmsTxt.ts` and `app/llms.txt/route.ts`) following the llmstxt.org specification, providing factual grounding for ChatGPT, Perplexity, Claude, and Gemini.
+- [x] **Strict Private Route De-indexing:**
+  - Added `noindex, nofollow` metadata to all authenticated layouts (`app/(student)/layout.tsx`, `app/(teacher)/layout.tsx`, `app/(admin)/layout.tsx`, `app/auth/layout.tsx`, `app/pending-approval/layout.tsx`).
+  - Added `X-Robots-Tag: noindex, nofollow` HTTP response headers in `next.config.ts`.
+  - Excluded crawler metadata endpoints from session middleware in `middleware.ts`.
+- [x] **Quality Gates & Verification:**
+  - `npm test`: **134 of 134 tests passing** across 46 test suites (+17 SEO unit tests).
+  - `npm run lint`: **0 errors, 0 warnings**.
+  - `npx tsc --noEmit`: **0 errors**.
+  - `npm run build`: **Compiled cleanly, prerendering all 36 static and dynamic routes**.

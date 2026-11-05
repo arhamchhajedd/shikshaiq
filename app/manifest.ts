@@ -1,11 +1,15 @@
 import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/seo/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
+    id: "/",
     name: "ShikshaIQ | Class 7 Adaptive Mathematics",
     short_name: "ShikshaIQ",
     description:
       "Personalized, NCERT-aligned adaptive mathematics learning platform with offline practice capabilities.",
+    lang: SITE.language,
+    dir: "ltr",
     start_url: "/student",
     scope: "/",
     display: "standalone",
@@ -25,6 +29,12 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "any",
         type: "image/svg+xml",
         purpose: "maskable",
+      },
+      {
+        src: "/apple-icon",
+        sizes: "180x180",
+        type: "image/png",
+        purpose: "any",
       },
     ],
   };

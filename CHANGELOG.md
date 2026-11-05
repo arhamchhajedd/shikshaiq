@@ -1,7 +1,46 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to the ShikshaIQ codebase are documented in this file.
 
+## [SEO, AEO & GEO Infrastructure] - 2026-11-05
+
+### Added
+- **Canonical Origin & Route Architecture (lib/seo/site.ts, lib/seo/routes.ts):**
+  - Centralized production site origin resolution defaulting to https://shikshaiq.vercel.app with NEXT_PUBLIC_SITE_URL support.
+  - Single source of truth for public routes (PUBLIC_ROUTES), feeding sitemap, robots, and LLM guides.
+- **Dynamic Sitemap (pp/sitemap.ts) & Crawler Directives (pp/robots.ts):**
+  - Generated standards-compliant XML sitemap covering all 11 public URLs with stable lastModified content timestamps.
+  - Allowed search engine bots, answer engines (Perplexity, GPTBot, ClaudeBot), and crawlers while isolating /api/ machine endpoints.
+- **Schema.org Structured Data & XSS-Safe Serialization (lib/seo/structuredData.ts, components/seo/JsonLd.tsx):**
+  - Safe JSON-LD serialization escaping <, >, &, \u2028, \u2029 to strictly prevent HTML script breakout vulnerabilities.
+  - Comprehensive Schema.org graph nodes: Organization, WebSite, WebApplication, BreadcrumbList, FAQPage, Course, and LearningResource.
+- **Public Content Expansion:**
+  - /curriculum: NCERT Class 7 Fractions DAG topology and learning order with Course & BreadcrumbList schema.
+  - /curriculum/[conceptId]: 5 statically prerendered public lesson guides with visual models, worked examples, and LearningResource schema.
+  - /faq: 14 verified, factual NCERT Fractions Q&As across 5 categories with FAQPage schema.
+  - /about: Pedagogical dilemma in Indian classrooms, deterministic engine vs. AI tutor separation, and DPDP Act minor privacy with AboutPage schema.
+  - Home page FAQ preview section (components/landing/FaqPreviewSection.tsx) and WebApplication schema.
+- **AEO & GEO Plaintext Map (pp/llms.txt/route.ts, lib/seo/llmsTxt.ts):**
+  - Implemented /llms.txt following the llmstxt.org specification for generative search grounding.
+- **OpenGraph & Media Generation:**
+  - Added programmatic Apple-minimal monochrome social cards (components/seo/OgImage.tsx, pp/opengraph-image.tsx, pp/twitter-image.tsx) via Next.js ImageResponse (1200x630 PNG).
+  - Added SVG app icon (pp/icon.svg), iOS touch icon (pp/apple-icon.tsx, 180x180 PNG), and updated PWA manifest (pp/manifest.ts).
+- **Private Route De-Indexing:**
+  - Injected 
+oindex, nofollow metadata across all authenticated layouts (pp/(student)/layout.tsx, pp/(teacher)/layout.tsx, pp/(admin)/layout.tsx, pp/auth/layout.tsx, pp/pending-approval/layout.tsx).
+  - Added X-Robots-Tag: noindex, nofollow HTTP response headers in 
+ext.config.ts.
+  - Excluded crawler metadata endpoints from session middleware in middleware.ts.
+- **Automated Testing & Quality Gates:**
+  - Added 17 unit tests in 	ests/seo.test.ts covering URL resolution, sitemap completeness, robots rules, XSS escaping in JSON-LD, Schema.org nodes, llms.txt format, and metadata generation.
+  - Automated test suite expanded to **134 passing tests across 46 suites** with 0 failures (
+pm test).
+  - 
+pm run lint: **0 errors, 0 warnings**.
+  - 
+px tsc --noEmit: **0 errors**.
+  - 
+pm run build: **All 36 static and dynamic routes prerendered cleanly**.
 ## [Live Telemetry & Student Gamification] - 2026-11-01
 
 ### Added
@@ -19,12 +58,12 @@ All notable changes to the ShikshaIQ codebase are documented in this file.
   - 3-star rating system per concept node (0 to 3 stars, max 15 across the curriculum graph).
   - Added [`components/gamification/StarRatingDisplay.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/gamification/StarRatingDisplay.tsx) rendered inline across the concept mastery table and overview stats.
   - Added [`components/gamification/AchievementBadges.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/gamification/AchievementBadges.tsx) showcasing unlockable milestones:
-    - 🏅 **"Root Gap Healer"** — Awarded when foundational prerequisite bottlenecks (Fraction Basics / Factors) are cured with demonstrated &ge; 80% mastery!
-    - 🔥 **"3-Day Learning Streak"** — Awarded for 3+ consecutive active learning days.
-    - ⭐ **"Star Collector"** — Awarded for earning 9+ curriculum stars.
-    - 🎯 **"Diagnostic Pioneer"** — Awarded for completing the 15-question diagnostic baseline.
-    - 👑 **"Fraction Grandmaster"** — Awarded for mastering all 5 concept nodes (15/15 stars).
-    - 📚 **"Interactive Scholar"** — Awarded for completing interactive conceptual lessons.
+    - ðŸ… **"Root Gap Healer"** â€” Awarded when foundational prerequisite bottlenecks (Fraction Basics / Factors) are cured with demonstrated &ge; 80% mastery!
+    - ðŸ”¥ **"3-Day Learning Streak"** â€” Awarded for 3+ consecutive active learning days.
+    - â­ **"Star Collector"** â€” Awarded for earning 9+ curriculum stars.
+    - ðŸŽ¯ **"Diagnostic Pioneer"** â€” Awarded for completing the 15-question diagnostic baseline.
+    - ðŸ‘‘ **"Fraction Grandmaster"** â€” Awarded for mastering all 5 concept nodes (15/15 stars).
+    - ðŸ“š **"Interactive Scholar"** â€” Awarded for completing interactive conceptual lessons.
 - **Parent WhatsApp Progress Report ([`components/share/ParentReportButton.tsx`](file:///home/vardhaman/Downloads/pratik-project/shikshaiq/components/share/ParentReportButton.tsx)):**
   - Instant one-click WhatsApp message generator sharing verified accuracy, curriculum stars, learning streak, and current remediation focus with parents.
   - Integrated across Student Dashboard, Assessment Results, and Teacher Student Detail views.
@@ -153,11 +192,11 @@ All notable changes to the ShikshaIQ codebase are documented in this file.
   - `NullTutorProvider` returning an honest, helpful unconfigured notice rather than simulated or fake chat replies.
 - **Socratic Pedagogical Framework (`lib/tutor/prompts.ts`):**
   - Culturally grounded analogies (rotis, cricket runs, gulab jamuns, pocket money).
-  - Native multilingual support for English, Hindi (हिंदी), and Marathi (मराठी).
+  - Native multilingual support for English, Hindi (à¤¹à¤¿à¤‚à¤¦à¥€), and Marathi (à¤®à¤°à¤¾à¤ à¥€).
   - Hardened guardrails: prompt injection defense, secret answer key protection, prohibition of score or mastery tampering.
 - **Interactive Student UI (`components/tutor/SocraticTutorDrawer.tsx`):**
   - Apple-inspired white and black minimal slide-over drawer embedded on `/student/learn/[conceptId]` and `/student/practice/[conceptId]`.
-  - Floating trigger pill, multilingual switcher (`EN`, `हि`, `म`), quick action prompt chips, message thread, auto-scrolling, thinking indicator, and retry handling.
+  - Floating trigger pill, multilingual switcher (`EN`, `à¤¹à¤¿`, `à¤®`), quick action prompt chips, message thread, auto-scrolling, thinking indicator, and retry handling.
 - **Database Persistence (`supabase/migrations/20261030030000_phase06_ai_tutor.sql`):**
   - `public.tutor_conversations` and `public.tutor_messages` tables with student-level Row Level Security (RLS).
 - **Automated Tests:**
@@ -193,7 +232,7 @@ All notable changes to the ShikshaIQ codebase are documented in this file.
   - Step-by-step worked examples with solution steps and pro-tips.
   - Common mistakes and misconceptions cards with explicit corrections and explanations.
   - "Mark as Completed" button with live status feedback and server persistence via `lib/curriculum/lessonActions.ts`.
-  - "Start Guided Practice →" direct transition button.
+  - "Start Guided Practice â†’" direct transition button.
 - **Interactive Guided Practice (`/student/practice/[conceptId]`):**
   - Interactive practice quiz interface with concept filtering from Supabase.
   - Real-time submission via `/api/practice/submit` endpoint with authenticated user verification.

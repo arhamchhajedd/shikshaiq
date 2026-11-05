@@ -1,4 +1,10 @@
 import type { NextConfig } from "next";
+import { PRIVATE_ROUTE_PREFIXES } from "./lib/seo/routes";
+
+/** API routes never belong in search results. */
+const API_ROUTE_PREFIXES = ["/api"] as const;
+
+const noIndexHeader = { key: "X-Robots-Tag", value: "noindex, nofollow" };
 
 const securityHeaders = [
   {
@@ -56,6 +62,13 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      // Belt-and-braces de-indexing for private and machine routes. Unlike
+      // <meta name="robots">, the header also covers redirects, JSON API
+      // responses and non-HTML assets served under these prefixes.
+      ...[...PRIVATE_ROUTE_PREFIXES, ...API_ROUTE_PREFIXES].flatMap((prefix) => [
+        { source: prefix, headers: [noIndexHeader] },
+        { source: `${prefix}/:path*`, headers: [noIndexHeader] },
+      ]),
     ];
   },
 };

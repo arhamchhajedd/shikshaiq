@@ -183,3 +183,27 @@
 
 
 
+
+---
+
+### ADR 019: Deep SEO, AEO & GEO Architecture with Safe Schema.org JSON-LD
+
+- **Context:** To achieve top search engine visibility (SEO), AI answer engine visibility (AEO: ChatGPT, Perplexity, Claude, Gemini), and generative engine grounding (GEO), the site requires crawlable canonical routes, sitemaps, robots.txt directives, social cards, rich metadata, and structured data. Crucially, structured data must never allow XSS script breakout attacks, and must never invent fake testimonials, fake ratings, or unverified claims.
+- **Decision:**
+  1. Centralized site origin configuration (`lib/seo/site.ts`) defaulting to `https://shikshaiq.vercel.app` with dynamic override via `NEXT_PUBLIC_SITE_URL`.
+  2. Single source of truth for public routes in `lib/seo/routes.ts` (`PUBLIC_ROUTES`), automatically feeding `app/sitemap.ts`, `app/robots.ts`, and `lib/seo/llmsTxt.ts`.
+  3. Public content pages: `/curriculum` (5-node Class 7 DAG syllabus), `/curriculum/[conceptId]` (public crawlable micro-lessons with visual models and worked examples), `/faq` (14 verified, factual NCERT Class 7 Fractions Q&As), and `/about` (mission, pedagogy, and strict architectural separation).
+  4. Native Schema.org JSON-LD generation with HTML sanitization escaping `<`, `>`, `&`, `\u2028`, `\u2029` via `serializeJsonLd()` to prevent HTML script tag injection. Emitted entities include `Organization`, `WebSite`, `WebApplication`, `BreadcrumbList`, `FAQPage`, `Course`, and `LearningResource`.
+  5. Implemented `/llms.txt` following the llmstxt.org proposal, providing a concise, factual markdown reference map for AI search agents and answer engines.
+- **Consequences:** 100% crawlable public content footprint, high rich snippet eligibility in Google, authoritative factual grounding for generative AI search engines, and absolute protection against script breakouts and data hallucination.
+
+---
+
+### ADR 020: Comprehensive De-indexing and Noindex Isolation for Private Routes
+
+- **Context:** Private user areas (`/student/*`, `/teacher/*`, `/admin/*`, `/pending-approval`, `/auth/*`, `/api/*`) hold minors' learning data, authenticated session states, or machine endpoints. These must be prevented from leaking into search engine results or link equity.
+- **Decision:**
+  1. Enforced `buildPrivateMetadata()` with `robots: { index: false, follow: false, nocache: true }` in route group layouts (`app/(student)/layout.tsx`, `app/(teacher)/layout.tsx`, `app/(admin)/layout.tsx`, `app/auth/layout.tsx`, `app/pending-approval/layout.tsx`).
+  2. In `next.config.ts`, added HTTP response header `X-Robots-Tag: noindex, nofollow` matching all private route prefixes and `/api/:path*`.
+  3. In `middleware.ts`, excluded crawler static endpoints (`robots.txt`, `sitemap.xml`, `llms.txt`, `manifest.webmanifest`, `opengraph-image`, `twitter-image`, `apple-icon`) from session middleware to ensure ultra-fast, identical 200 responses for all web spiders.
+- **Consequences:** Multi-layered defense preventing search indexing of private student/teacher dashboards and API endpoints, while keeping search crawler access lightning-fast for public pages.

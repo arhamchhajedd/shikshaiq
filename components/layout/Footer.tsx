@@ -30,15 +30,15 @@ export const Footer: React.FC = () => {
           {/* Student Experience */}
           <div>
             <h4 className="text-[11px] font-semibold uppercase tracking-wider text-black mb-3.5">
-              Student Experience
+              Curriculum & Learning
             </h4>
             <ul className="space-y-2 text-xs text-zinc-600">
               <li>
                 <Link
-                  href="/student"
+                  href="/curriculum"
                   className="hover:text-black transition-colors inline-flex items-center gap-1"
                 >
-                  Student Dashboard
+                  Curriculum Topology
                   <ArrowUpRight className="h-3 w-3 opacity-50" />
                 </Link>
               </li>
@@ -52,20 +52,20 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#how-it-works"
+                <Link
+                  href="/faq"
                   className="hover:text-black transition-colors"
                 >
-                  Adaptive Concept Graph
-                </a>
+                  Frequently Asked Questions
+                </Link>
               </li>
               <li>
-                <a
-                  href="#learning-paths"
+                <Link
+                  href="/about"
                   className="hover:text-black transition-colors"
                 >
-                  Personalized Pathways
-                </a>
+                  About & Pedagogical Mission
+                </Link>
               </li>
             </ul>
           </div>
@@ -102,12 +102,12 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#offline-capability"
+                <Link
+                  href="/#offline-capability"
                   className="hover:text-black transition-colors"
                 >
                   Offline & Multilingual
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

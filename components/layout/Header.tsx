@@ -11,7 +11,6 @@ import {
   Shield,
   GraduationCap,
   User,
-  WifiOff,
   ChevronDown,
   BookOpen,
   Sparkles,
@@ -26,31 +25,14 @@ import { UserProfile, UserRole } from "@/types/auth";
 import { syncManager } from "@/lib/offline/syncManager";
 import { cn } from "@/lib/utils";
 
-/** External browser subscriptions for React 19 concurrent safety */
-function subscribeToOnline(callback: () => void) {
-  window.addEventListener("online", callback);
-  window.addEventListener("offline", callback);
-  return () => {
-    window.removeEventListener("online", callback);
-    window.removeEventListener("offline", callback);
-  };
-}
-
-function getOnlineSnapshot() {
-  return navigator.onLine;
-}
-
-function getServerOnlineSnapshot() {
-  return true;
-}
-
+/** External browser scroll subscription for React 19 concurrent safety */
 function subscribeToScroll(callback: () => void) {
   window.addEventListener("scroll", callback, { passive: true });
   return () => window.removeEventListener("scroll", callback);
 }
 
 function getScrollSnapshot() {
-  return window.scrollY > 10;
+  return window.scrollY > 8;
 }
 
 function getServerScrollSnapshot() {
@@ -59,12 +41,10 @@ function getServerScrollSnapshot() {
 
 /**
  * Top navigation bar following Apple's ultra-minimal, high-contrast aesthetic:
- * - Dynamic translucent glassmorphism with scroll depth
- * - Active route detection and accessible aria-current states
- * - Offline sync status micro-badge
- * - Authenticated user account menu with role-based quick actions
- * - Full-featured accessible mobile drawer with keyboard controls
- * - Zero dead links and full screen-reader support
+ * - Dynamic translucent glassmorphism with subtle hairline border on scroll
+ * - Generously spaced, crisp navigation links with subtle active indicators
+ * - Clean user profile dropdown for authenticated sessions
+ * - Smooth accessible mobile drawer with complete keyboard support
  */
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -75,17 +55,11 @@ export const Header: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isConfigured = isSupabaseConfigured();
 
-  // Concurrent-safe browser state subscribers
+  // Scroll detection for Apple-style glassmorphism elevation
   const isScrolled = useSyncExternalStore(
     subscribeToScroll,
     getScrollSnapshot,
     getServerScrollSnapshot
-  );
-
-  const isOnline = useSyncExternalStore(
-    subscribeToOnline,
-    getOnlineSnapshot,
-    getServerOnlineSnapshot
   );
 
   // Lock body scroll when mobile menu is open
@@ -201,6 +175,9 @@ export const Header: React.FC = () => {
     if (href === "/") {
       return pathname === "/";
     }
+    if (href === "/student") {
+      return pathname === "/student" || pathname.startsWith("/student/learn") || pathname.startsWith("/student/practice");
+    }
     return pathname.startsWith(href);
   };
 
@@ -218,7 +195,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      {/* Accessible skip link for keyboard users */}
+      {/* Accessible skip link for keyboard navigation */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded-lg focus:shadow-lg focus:text-xs focus:font-medium focus:ring-2 focus:ring-white"
@@ -230,52 +207,36 @@ export const Header: React.FC = () => {
         className={cn(
           "sticky top-0 z-50 w-full transition-all duration-200 font-sans",
           isScrolled
-            ? "border-b border-black/[0.08] bg-white/90 backdrop-blur-xl shadow-[0_2px_16px_rgba(0,0,0,0.03)]"
-            : "border-b border-black/[0.04] bg-white/75 backdrop-blur-md"
+            ? "border-b border-black/[0.08] bg-white/90 backdrop-blur-xl shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
+            : "border-b border-black/[0.05] bg-white/80 backdrop-blur-md"
         )}
       >
-        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-          <div className="flex h-16 items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between gap-6">
             {/* Brand Logo & Wordmark */}
-            <div className="flex items-center gap-3">
-              <Link
-                href="/"
-                className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-xl py-1 px-1 transition-transform active:scale-[0.98]"
-                onClick={closeMenu}
-                aria-label="ShikshaIQ Home"
-              >
-                <div className="h-8 w-8 rounded-lg bg-black text-white flex items-center justify-center shadow-xs transition-colors group-hover:bg-neutral-800">
-                  <span className="font-semibold text-xs tracking-tight">IQ</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-semibold tracking-tight text-black">
-                    ShikshaIQ
-                  </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-zinc-500 bg-neutral-100 px-2 py-0.5 rounded-full border border-black/[0.04]">
-                    <span>Class 7</span>
-                    <span className="text-zinc-300">•</span>
-                    <span>NCERT</span>
-                  </span>
-                </div>
-              </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg py-1 px-1 transition-transform active:scale-[0.98] shrink-0"
+              onClick={closeMenu}
+              aria-label="ShikshaIQ Home"
+            >
+              <div className="h-8 w-8 rounded-lg bg-black text-white flex items-center justify-center shadow-xs transition-colors group-hover:bg-neutral-800">
+                <span className="font-semibold text-xs tracking-tight">IQ</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-semibold tracking-tight text-black">
+                  ShikshaIQ
+                </span>
+                <span className="hidden sm:inline-block text-[11px] text-zinc-400 font-normal">
+                  Class 7
+                </span>
+              </div>
+            </Link>
 
-              {/* Offline micro-pill */}
-              {!isOnline && (
-                <div
-                  className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200/90 text-[11px] font-medium text-amber-900"
-                  role="status"
-                  aria-live="polite"
-                >
-                  <WifiOff className="h-3 w-3 text-amber-600 animate-pulse" />
-                  <span>Offline (Sync Active)</span>
-                </div>
-              )}
-            </div>
-
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation Links — Generous spacing with clear active indicator */}
             <nav
               aria-label="Main Navigation"
-              className="hidden md:flex items-center gap-1 lg:gap-1.5 text-[13px] font-medium"
+              className="hidden md:flex items-center gap-7 lg:gap-8 text-[13px] font-medium"
             >
               {navLinks.map((item) => {
                 const active = isLinkActive(item.href);
@@ -285,19 +246,25 @@ export const Header: React.FC = () => {
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "px-3.5 py-1.5 rounded-full transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black",
+                      "relative py-1 transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-sm",
                       active
-                        ? "bg-black text-white shadow-xs font-semibold"
-                        : "text-zinc-600 hover:text-black hover:bg-neutral-100/80"
+                        ? "text-black font-semibold"
+                        : "text-zinc-600 hover:text-black font-medium"
                     )}
                   >
                     <span>{item.label}</span>
                     {item.badge && (
                       <span
                         className={cn(
-                          "w-1.5 h-1.5 rounded-full",
-                          active ? "bg-emerald-400" : "bg-emerald-500 animate-pulse"
+                          "w-1.5 h-1.5 rounded-full bg-emerald-500",
+                          !active && "animate-pulse"
                         )}
+                        aria-hidden="true"
+                      />
+                    )}
+                    {active && (
+                      <span
+                        className="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-black rounded-full"
                         aria-hidden="true"
                       />
                     )}
@@ -307,7 +274,7 @@ export const Header: React.FC = () => {
             </nav>
 
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-3 shrink-0">
               {currentUser ? (
                 <div className="relative" ref={dropdownRef}>
                   <button
@@ -338,7 +305,12 @@ export const Header: React.FC = () => {
                       {currentUser.role === "student" && <User className="h-2.5 w-2.5" />}
                       <span>{currentUser.role}</span>
                     </span>
-                    <ChevronDown className={cn("h-3 w-3 text-zinc-400 transition-transform duration-200", userDropdownOpen && "rotate-180")} />
+                    <ChevronDown
+                      className={cn(
+                        "h-3 w-3 text-zinc-400 transition-transform duration-200",
+                        userDropdownOpen && "rotate-180"
+                      )}
+                    />
                   </button>
 
                   {/* User Profile Dropdown Menu */}
@@ -409,10 +381,10 @@ export const Header: React.FC = () => {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-3">
                   <Link
                     href="/login"
-                    className="text-[13px] font-medium text-zinc-700 hover:text-black px-3.5 py-1.5 rounded-full hover:bg-neutral-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                    className="text-xs font-medium text-zinc-700 hover:text-black px-3 py-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg"
                   >
                     Sign In
                   </Link>
@@ -425,7 +397,7 @@ export const Header: React.FC = () => {
             </div>
 
             {/* Mobile Menu Hamburger */}
-            <div className="flex md:hidden items-center gap-2">
+            <div className="flex md:hidden items-center">
               <button
                 type="button"
                 className="p-2 rounded-xl text-zinc-700 hover:text-black hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black transition-colors"
@@ -451,15 +423,6 @@ export const Header: React.FC = () => {
             className="md:hidden border-b border-black/[0.08] bg-white/95 backdrop-blur-2xl shadow-xl transition-all font-sans"
           >
             <div className="px-5 pt-3 pb-6 max-h-[calc(100vh-4rem)] overflow-y-auto">
-              {/* Online/Offline Status for Mobile */}
-              <div className="mb-3 px-3 py-2 rounded-xl bg-neutral-50 border border-black/[0.04] flex items-center justify-between text-xs">
-                <span className="text-zinc-500 font-medium">Curriculum Standards</span>
-                <span className="inline-flex items-center gap-1.5 font-semibold text-black">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                  NCERT Class 7 Maths
-                </span>
-              </div>
-
               <nav className="flex flex-col gap-1 text-sm font-medium text-zinc-800">
                 <div className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 px-3 pt-2 pb-1">
                   Curriculum & Guides
@@ -502,7 +465,7 @@ export const Header: React.FC = () => {
                   )}
                   onClick={closeMenu}
                 >
-                  About ShikshaIQ & Pedagogy
+                  About ShikshaIQ
                 </Link>
 
                 <div className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 px-3 pt-4 pb-1">
